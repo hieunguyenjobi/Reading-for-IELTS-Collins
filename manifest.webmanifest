@@ -1,14 +1,17 @@
 {
-  "name": "Collins Reading for IELTS — Trainer",
+  "name": "IELTS Reading Trainer",
   "short_name": "IELTS Reading",
-  "description": "Luyện IELTS Reading: ôn lỗi, sổ từ vựng, thi thử.",
+  "description": "Luyện IELTS Reading theo Collins: bài tập, thi thử 40 câu, ôn tập ngắt quãng.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#1E3A8A",
   "theme_color": "#1E3A8A",
   "icons": [
-    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }
   ]
 }

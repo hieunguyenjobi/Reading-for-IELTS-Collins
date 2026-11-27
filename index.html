@@ -6,7 +6,8 @@
   <title>Collins Reading for IELTS — Trainer v5</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22%3E%3Cdefs%3E%3ClinearGradient id=%22bg%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%231E3A8A%22/%3E%3Cstop offset=%221%22 stop-color=%22%232563EB%22/%3E%3C/linearGradient%3E%3ClinearGradient id=%22pg%22 x1=%220%22 y1=%220%22 x2=%220%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%23FFFFFF%22/%3E%3Cstop offset=%221%22 stop-color=%22%23DBEAFE%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%22512%22 height=%22512%22 rx=%22112%22 fill=%22url(%23bg)%22/%3E%3Cpath d=%22M256 214C214 182 150 178 92 192V392C150 378 214 382 256 414C298 382 362 378 420 392V192C362 178 298 182 256 214Z%22 fill=%22url(%23pg)%22/%3E%3Cpath d=%22M256 214V414%22 stroke=%22%231E3A8A%22 stroke-opacity=%22.28%22 stroke-width=%226%22/%3E%3Cg fill=%22%2393C5FD%22%3E%3Crect x=%22128%22 y=%22236%22 width=%2292%22 height=%2212%22 rx=%226%22/%3E%3Crect x=%22128%22 y=%22266%22 width=%2276%22 height=%2212%22 rx=%226%22/%3E%3Crect x=%22128%22 y=%22296%22 width=%2288%22 height=%2212%22 rx=%226%22/%3E%3Crect x=%22292%22 y=%22236%22 width=%2292%22 height=%2212%22 rx=%226%22/%3E%3Crect x=%22292%22 y=%22266%22 width=%2276%22 height=%2212%22 rx=%226%22/%3E%3C/g%3E%3Crect x=%22292%22 y=%22296%22 width=%2260%22 height=%2212%22 rx=%226%22 fill=%22%23F59E0B%22/%3E%3Cpath d=%22M132 152L206 112L252 138L352 72%22 fill=%22none%22 stroke=%22%23F59E0B%22 stroke-width=%2222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3Cpath d=%22M304 66L362 62L350 120%22 fill=%22none%22 stroke=%22%23F59E0B%22 stroke-width=%2222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="theme-color" content="#1E3A8A">
   <script>if (window.tailwind) tailwind.config = { darkMode: "class" };</script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -60,6 +61,11 @@
     .fs-md { font-size: 15.5px; }
     .fs-lg { font-size: 17px; }
     .fs-xl { font-size: 18.5px; }
+    .nav-t.active { background: rgba(255,255,255,.2); color: #fff; box-shadow: inset 0 -2px 0 #FBBF24; }
+    .nav-b.active { color: #1E3A8A; }
+    .nav-b.active span:first-child { transform: translateY(-1px) scale(1.12); }
+    .dark .nav-b.active { color: #93C5FD; }
+    @media (max-width: 767px) { body { padding-bottom: 0; } }
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -133,88 +139,64 @@
   </script>
 
   <!-- TOP NAVIGATION -->
-  <header class="bg-[#1E3A8A] text-white shadow-md sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-3 cursor-pointer" onclick="showDashboard()">
-        <div class="w-9 h-9 rounded-lg bg-white/15 border border-white/25 flex items-center justify-center font-bold text-lg tracking-tight">CR</div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h1 class="font-bold text-base sm:text-lg tracking-tight">Collins Reading for IELTS</h1>
-            <span class="hidden sm:inline-block text-[11px] uppercase tracking-wider bg-amber-400/20 text-amber-200 border border-amber-300/30 px-2 py-0.5 rounded-full font-semibold">v5</span>
-          </div>
-          <p class="text-xs text-blue-200">Band 5.0–5.5 → 6.0+ • Adaptive review</p>
+  <header class="bg-gradient-to-r from-[#1E3A8A] to-[#2563EB] text-white shadow-md sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex items-center gap-2 sm:gap-3">
+      <button onclick="showToday()" class="flex items-center gap-2.5 text-left shrink-0" aria-label="Về trang Hôm nay">
+        <svg class="w-9 h-9 shrink-0 drop-shadow" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="lbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1E3A8A"/><stop offset="1" stop-color="#2563EB"/></linearGradient>
+<linearGradient id="lpg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#DBEAFE"/></linearGradient></defs><rect width="512" height="512" rx="112" fill="url(#lbg)"/><path d="M256 214C214 182 150 178 92 192V392C150 378 214 382 256 414C298 382 362 378 420 392V192C362 178 298 182 256 214Z" fill="url(#lpg)"/>
+<path d="M256 214V414" stroke="#1E3A8A" stroke-opacity=".28" stroke-width="6"/>
+<g fill="#93C5FD"><rect x="128" y="236" width="92" height="12" rx="6"/><rect x="128" y="266" width="76" height="12" rx="6"/><rect x="128" y="296" width="88" height="12" rx="6"/>
+<rect x="292" y="236" width="92" height="12" rx="6"/><rect x="292" y="266" width="76" height="12" rx="6"/></g>
+<rect x="292" y="296" width="60" height="12" rx="6" fill="#F59E0B"/>
+<path d="M132 152L206 112L252 138L352 72" fill="none" stroke="#F59E0B" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M304 66L362 62L350 120" fill="none" stroke="#F59E0B" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="min-w-0">
+          <span class="flex items-center gap-2"><span class="font-bold text-sm sm:text-lg tracking-tight leading-tight whitespace-nowrap">IELTS Reading</span><span class="hidden sm:inline-block text-[10px] uppercase tracking-wider bg-amber-400/20 text-amber-200 border border-amber-300/30 px-1.5 py-0.5 rounded-full font-semibold">v5</span></span>
+          <span class="hidden sm:block text-[11px] text-blue-200 leading-tight">Collins • lộ trình band 5.5 → 6.5+</span>
+        </span>
+      </button>
+      <nav class="hidden md:flex items-center gap-1 ml-4" aria-label="Điều hướng chính"><button data-nav="today" onclick="showToday()" class="nav-t relative flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold text-blue-100 hover:bg-white/10 transition"><span aria-hidden="true">🏠</span><span>Hôm nay</span></button><button data-nav="library" onclick="showLibrary()" class="nav-t relative flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold text-blue-100 hover:bg-white/10 transition"><span aria-hidden="true">📚</span><span>Thư viện</span></button><button data-nav="mock" onclick="showMock()" class="nav-t relative flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold text-blue-100 hover:bg-white/10 transition"><span aria-hidden="true">📝</span><span>Thi thử</span></button><button data-nav="review" onclick="showReview()" class="nav-t relative flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold text-blue-100 hover:bg-white/10 transition"><span aria-hidden="true">🔁</span><span>Ôn tập</span><span class="due-badge hidden min-w-[18px] text-center text-[10px] font-bold bg-rose-500 text-white rounded-full px-1.5 py-0.5"></span></button><button data-nav="dashboard" onclick="showDashboard()" class="nav-t relative flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold text-blue-100 hover:bg-white/10 transition"><span aria-hidden="true">📊</span><span>Tiến độ</span></button></nav>
+      <div class="flex items-center gap-1.5 sm:gap-2 ml-auto">
+        <div class="flex items-center gap-1.5 bg-blue-950/50 border border-white/15 px-2.5 py-1.5 rounded-xl" title="Thời gian học phiên này">
+          <span id="timer-display" class="font-mono text-xs sm:text-sm font-bold tracking-wider">00:00</span>
+          <span id="timer-mode-badge" class="hidden sm:inline text-[10px] uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-200 font-semibold">Study</span>
+          <button onclick="toggleTimerPause()" id="btn-timer-pause" title="Tạm dừng / tiếp tục" class="hidden sm:inline text-xs text-blue-200 hover:text-white">⏸</button>
         </div>
-      </div>
-
-      <div class="flex items-center gap-2 sm:gap-3">
-        <!-- Auth status -->
+        <button onclick="openPicker()" class="flex items-center gap-1.5 bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-sm px-2.5 sm:px-3 py-2 rounded-xl transition" title="Chọn bài để học (Ctrl+K)"><span aria-hidden="true">🗂</span><span class="hidden sm:inline">Chọn bài</span></button>
         <div id="auth-status" class="flex items-center gap-2">
-          <button onclick="openAuthModal()" id="btn-login" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-xs sm:text-sm px-3 py-2 rounded-xl transition">
-            <span>🔐</span><span class="hidden sm:inline">Đăng nhập</span>
-          </button>
-          <div id="user-badge" class="hidden items-center gap-2 bg-emerald-500/20 border border-emerald-400/40 px-2.5 py-1.5 rounded-xl">
-            <span id="user-email-short" class="text-xs font-medium text-emerald-100 max-w-[120px] truncate"></span>
-            <button onclick="signOut()" class="text-xs text-emerald-200 hover:text-white" title="Đăng xuất">⎋</button>
+          <button onclick="openAuthModal()" id="btn-login" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/20 font-semibold text-sm px-2.5 sm:px-3 py-2 rounded-xl transition" title="Đăng nhập để đồng bộ"><span aria-hidden="true">🔐</span><span class="hidden lg:inline">Đăng nhập</span></button>
+          <div id="user-badge" class="hidden items-center gap-1.5 bg-emerald-500/20 border border-emerald-400/40 px-2.5 py-1.5 rounded-xl">
+            <span id="user-email-short" class="text-xs font-medium text-emerald-100 max-w-[90px] sm:max-w-[140px] truncate"></span>
+            <button onclick="signOut()" class="text-xs text-emerald-200 hover:text-white" title="Đăng xuất" aria-label="Đăng xuất">⎋</button>
           </div>
         </div>
-
-        <div class="flex items-center gap-2 bg-blue-950/70 border border-blue-700/70 px-3 py-1.5 rounded-xl">
-          <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          <span id="timer-display" class="font-mono text-sm font-bold tracking-wider text-white">00:00</span>
-          <span id="timer-mode-badge" class="text-[10px] uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-200 font-semibold">Study</span>
-          <button onclick="toggleTimerPause()" id="btn-timer-pause" title="Pause / Resume" class="text-xs text-blue-200 hover:text-white ml-1">⏸</button>
+        <div class="relative">
+          <button onclick="toggleMore(event)" id="btn-more" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-lg leading-none" aria-haspopup="true" aria-label="Thêm">⋯</button>
+          <div id="more-menu" class="hidden absolute right-0 mt-2 w-56 rounded-xl bg-white text-slate-800 shadow-xl border border-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-600 overflow-hidden z-50">
+            <button onclick="toggleDarkMode();closeMore()" id="btn-dark" class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><span id="dark-icon">🌙</span><span>Chế độ sáng / tối</span></button>
+            <button onclick="openTipsModal();closeMore()" class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><span>💡</span><span>Exam tips</span></button>
+            <button onclick="showVocab();closeMore()" class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><span>🔤</span><span>Sổ từ vựng</span></button>
+            <button onclick="openConfigModal();closeMore()" class="w-full text-left px-4 py-2.5 text-sm hover:bg-slate-100 dark:hover:bg-slate-700 flex items-center gap-2"><span>⚙️</span><span>Cấu hình đồng bộ</span></button>
+          </div>
         </div>
-
-        <button onclick="openPicker()" class="flex items-center gap-1.5 bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-xs sm:text-sm px-3 py-2 rounded-xl transition" title="Chọn bài để học (Ctrl+K)">
-          <span>🗂</span><span>Chọn bài</span>
-        </button>
-
-        <button onclick="showLibrary()" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-xs sm:text-sm px-3 py-2 rounded-xl transition" title="Thư viện bài (nhập đề JSON)">
-          <span>📚</span><span class="hidden sm:inline">Thư viện</span>
-        </button>
-
-        <button onclick="showMock()" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-xs sm:text-sm px-3 py-2 rounded-xl transition" title="Thi thử 20–60 phút">
-          <span>📝</span><span class="hidden sm:inline">Thi thử</span>
-        </button>
-
-        <button onclick="showReview()" class="relative flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-xs sm:text-sm px-3 py-2 rounded-xl transition" title="Ôn lỗi & từ vựng">
-          <span>🔁</span><span class="hidden sm:inline">Ôn tập</span><span id="due-badge" class="hidden min-w-[18px] text-center text-[10px] font-bold bg-rose-500 text-white rounded-full px-1.5 py-0.5"></span>
-        </button>
-
-        <button onclick="showDashboard()" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-xs sm:text-sm px-3 py-2 rounded-xl transition" title="Dashboard">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-          <span class="hidden sm:inline">Progress</span>
-        </button>
-
-        <button onclick="openConfigModal()" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold text-xs sm:text-sm px-3 py-2 rounded-xl transition" title="Cấu hình Supabase">
-          <span>⚙️</span><span class="hidden sm:inline">Config</span>
-        </button>
-
-        <button onclick="toggleDarkMode()" id="btn-dark" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center transition" title="Dark mode">
-          <span id="dark-icon">🌙</span>
-        </button>
-
-        <button onclick="openTipsModal()" class="flex items-center gap-1.5 bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold text-xs sm:text-sm px-3 py-2 rounded-xl shadow transition">
-          <span>💡</span><span class="hidden sm:inline">Tips</span>
-        </button>
       </div>
     </div>
-
-    <div class="bg-white border-b border-slate-200 text-slate-700 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200" id="subnav">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2 flex items-center justify-between gap-3 text-xs">
-        <span class="text-slate-500 dark:text-slate-400">Mỗi bài tập là một JSON trong 📚 Thư viện — thêm bài mới không cần sửa code.</span>
+    <div class="bg-white/95 border-b border-slate-200 text-slate-700 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200" id="subnav">
+      <div class="max-w-7xl mx-auto px-3 sm:px-6 py-1.5 flex items-center justify-between gap-3 text-xs">
+        <span class="hidden sm:inline text-slate-500 dark:text-slate-400">Mẹo: <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 font-mono">Ctrl</kbd>+<kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 font-mono">K</kbd> để chọn bài nhanh</span>
         <span id="sync-status" class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 font-medium dark:bg-slate-700 dark:text-slate-300">Guest mode</span>
       </div>
     </div>
   </header>
+  <nav id="bottom-nav" class="md:hidden fixed bottom-0 inset-x-0 z-40 grid grid-cols-5 bg-white/95 backdrop-blur border-t border-slate-200 dark:bg-slate-900/95 dark:border-slate-700 pb-[env(safe-area-inset-bottom)]" aria-label="Điều hướng chính"><button data-nav="today" onclick="showToday()" class="nav-b relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400"><span class="text-xl leading-none" aria-hidden="true">🏠</span><span>Hôm nay</span></button><button data-nav="library" onclick="showLibrary()" class="nav-b relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400"><span class="text-xl leading-none" aria-hidden="true">📚</span><span>Thư viện</span></button><button data-nav="mock" onclick="showMock()" class="nav-b relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400"><span class="text-xl leading-none" aria-hidden="true">📝</span><span>Thi thử</span></button><button data-nav="review" onclick="showReview()" class="nav-b relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400"><span class="text-xl leading-none" aria-hidden="true">🔁</span><span>Ôn tập</span><span class="due-badge hidden absolute top-1 left-1/2 ml-2 min-w-[16px] text-center text-[10px] font-bold bg-rose-500 text-white rounded-full px-1">0</span></button><button data-nav="dashboard" onclick="showDashboard()" class="nav-b relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400"><span class="text-xl leading-none" aria-hidden="true">📊</span><span>Tiến độ</span></button></nav>
 
   <!-- TOAST -->
-  <div id="toast-box" class="fixed bottom-5 right-5 z-50 hidden max-w-sm bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl border border-slate-700 flex items-center gap-3">
+  <div id="toast-box" class="fixed bottom-20 md:bottom-5 right-4 md:right-5 z-50 hidden max-w-sm bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl border border-slate-700 flex items-center gap-3">
     <span id="toast-icon" class="text-lg">💡</span>
     <p id="toast-msg" class="text-xs sm:text-sm font-medium"></p>
   </div>
 
-  <main id="app-container" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6"></main>
+  <main id="app-container" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 pb-24 md:pb-6"></main>
 
   <!-- CONFIG MODAL (Supabase URL + Anon Key) -->
   <div id="config-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -260,9 +242,13 @@
   updated_at timestamptz not null default now()
 );
 alter table public.user_progress enable row level security;
+drop policy if exists "own select" on public.user_progress;
 create policy "own select" on public.user_progress for select using (auth.uid() = user_id);
+drop policy if exists "own insert" on public.user_progress;
 create policy "own insert" on public.user_progress for insert with check (auth.uid() = user_id);
+drop policy if exists "own update" on public.user_progress;
 create policy "own update" on public.user_progress for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+drop policy if exists "own delete" on public.user_progress;
 create policy "own delete" on public.user_progress for delete using (auth.uid() = user_id);</pre></details></li>
             <li>Authentication → Providers → Email → bật Email</li>
             <li>Bấm <strong>Đăng nhập</strong> trên app và nhập email</li>
@@ -273,42 +259,19 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
   </div>
 
   <!-- AUTH MODAL -->
-  <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-      <div class="bg-[#1E3A8A] text-white px-6 py-4 flex items-center justify-between">
-        <h2 class="font-bold text-lg">Đăng nhập / Đăng ký</h2>
-        <button onclick="closeAuthModal()" class="text-blue-200 hover:text-white text-xl font-bold px-2">&times;</button>
+  <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden max-h-[92vh] overflow-y-auto">
+      <div class="bg-gradient-to-r from-[#1E3A8A] to-[#2563EB] text-white px-6 py-4 flex items-center justify-between">
+        <h2 id="auth-title" class="font-bold text-lg">Tài khoản học</h2>
+        <button onclick="closeAuthModal()" class="text-blue-200 hover:text-white text-xl font-bold px-2" aria-label="Đóng">&times;</button>
       </div>
-      <div class="p-6 space-y-4">
-        <p class="text-sm text-slate-600 dark:text-slate-300">
-          Nhập email để nhận <strong>magic link</strong>. Không cần mật khẩu. Tiến độ sẽ được đồng bộ theo tài khoản email của bạn.
-        </p>
-
+      <div class="p-6 space-y-4 text-slate-800 dark:text-slate-100">
         <div id="auth-config-warning" class="hidden p-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs dark:bg-amber-900/40 dark:border-amber-700 dark:text-amber-100">
-          <strong>Chưa cấu hình Supabase.</strong> Bấm nút <strong>⚙️ Config</strong> trên thanh menu, dán Project URL và anon key, rồi Lưu.
+          <strong>Chưa cấu hình Supabase.</strong> Mở menu <strong>⋯ → Cấu hình đồng bộ</strong>, dán Project URL và anon key, rồi Lưu.
         </div>
-
-        <div id="auth-form">
-          <label class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1.5">Email</label>
-          <input type="email" id="auth-email" placeholder="ban@email.com" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 bg-white text-sm focus:outline-none focus:border-blue-600 dark:bg-slate-900 dark:border-slate-600 dark:text-white" />
-          <button onclick="sendMagicLink()" id="btn-send-link" class="mt-3 w-full py-2.5 rounded-xl bg-[#1E3A8A] hover:bg-blue-800 text-white font-semibold text-sm transition">
-            Gửi Magic Link
-          </button>
-        </div>
-
-        <div id="auth-sent" class="hidden text-center space-y-3">
-          <div class="text-4xl">📧</div>
-          <p class="text-sm text-slate-700 dark:text-slate-200">Đã gửi link đăng nhập đến <strong id="auth-sent-email"></strong></p>
-          <p class="text-xs text-slate-500 dark:text-slate-400">Kiểm tra hộp thư (và cả spam). Click vào link để đăng nhập. Có thể đóng cửa sổ này.</p>
-          <div class="text-left">
-            <label for="auth-code" class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1.5">Hoặc nhập mã 6 số trong email (hữu ích khi dùng app cài trên điện thoại)</label>
-            <div class="flex gap-2"><input id="auth-code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="123456" class="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 bg-white text-sm tracking-widest dark:bg-slate-900 dark:border-slate-600 dark:text-white" />
-            <button onclick="verifyCode()" id="btn-verify" class="px-4 py-2.5 rounded-xl bg-[#1E3A8A] hover:bg-blue-800 text-white font-semibold text-sm">Xác nhận</button></div>
-          </div>
-          <button onclick="closeAuthModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold dark:bg-slate-700 dark:text-white">Đóng</button>
-        </div>
-
-        <div id="auth-error" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-300 text-rose-800 text-xs dark:bg-rose-900/40 dark:border-rose-700 dark:text-rose-100"></div>
+        <div id="auth-body"></div>
+        <div id="auth-error" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-300 text-rose-800 text-xs dark:bg-rose-900/40 dark:border-rose-700 dark:text-rose-100" role="alert"></div>
+        <div id="auth-info" class="hidden p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs dark:bg-emerald-900/40 dark:border-emerald-700 dark:text-emerald-100" role="status"></div>
       </div>
     </div>
   </div>
@@ -488,7 +451,7 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
     let state = {
       unit: 1,
       part: 1,
-      view: "library",
+      view: "today",
       timerSeconds: 0,
       isExamCountdown: false,
       timerPaused: false,
@@ -682,73 +645,182 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
     }
 
     // ---------- Auth ----------
-    function openAuthModal() {
-      document.getElementById("auth-modal").classList.remove("hidden");
-      document.getElementById("auth-form").classList.remove("hidden");
-      document.getElementById("auth-sent").classList.add("hidden");
-      document.getElementById("auth-error").classList.add("hidden");
-      // Re-check client (in case config just saved)
+    const OWNER_KEY = "ielts_owner";
+    const AUTH = { mode: "login", email: "", pending: null, cool: 0, timer: null, busy: false };
+    function authErr(e) {
+      const m = String((e && e.message) || e || "");
+      const map = [
+        [/invalid login credentials/i, "Sai email hoặc mật khẩu."],
+        [/email not confirmed/i, "Email chưa được xác nhận. Hãy mở email xác nhận (hoặc dùng tab Mã/Link email)."],
+        [/already registered|already been registered/i, "Email này đã có tài khoản. Hãy đăng nhập hoặc chọn Quên mật khẩu."],
+        [/rate limit|too many|security purposes|after \d+ seconds/i, "Gửi quá nhanh hoặc quá nhiều lần. Hãy chờ khoảng 60 giây (hoặc vài phút) rồi thử lại."],
+        [/password should be|weak password|at least \d+ char/i, "Mật khẩu quá yếu hoặc quá ngắn (dùng từ 8 ký tự, có cả chữ và số)."],
+        [/signups? not allowed|signup is disabled/i, "Dự án Supabase đang tắt đăng ký tài khoản mới (Authentication → Providers → Email)."],
+        [/error sending|smtp|sending .* email/i, "Supabase không gửi được email (giới hạn gửi mặc định hoặc cấu hình SMTP). Thử lại sau hoặc cấu hình SMTP riêng."],
+        [/token has expired|otp.*expired|invalid.*token|otp_expired/i, "Mã hoặc link đã hết hạn / không đúng. Hãy gửi lại mã mới."],
+        [/failed to fetch|network|load failed/i, "Không kết nối được tới Supabase. Kiểm tra mạng và Project URL."],
+        [/invalid api key|apikey/i, "Anon key không đúng. Kiểm tra lại trong ⋯ → Cấu hình đồng bộ."],
+        [/same password|different from the old/i, "Mật khẩu mới phải khác mật khẩu cũ."]
+      ];
+      for (const [re, vi] of map) if (re.test(m)) return vi;
+      return m || "Có lỗi xảy ra, hãy thử lại.";
+    }
+    function authMsg(kind, t) {
+      const er = byId("auth-error"), inf = byId("auth-info"); if (!er || !inf) return;
+      er.classList.add("hidden"); inf.classList.add("hidden");
+      if (!t) return;
+      const el = kind === "err" ? er : inf; el.textContent = t; el.classList.remove("hidden");
+    }
+    function authSet(mode, keepMsg) { AUTH.mode = mode; if (!keepMsg) authMsg(); renderAuth(); }
+    function authValEmail() {
+      const e = (byId("auth-email") && byId("auth-email").value || "").trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)) { authMsg("err", "Nhập email hợp lệ, ví dụ ban@email.com."); return null; }
+      AUTH.email = e; window._authEmail = e; return e;
+    }
+    function authRedirect() { return /^https?:$/.test(location.protocol) ? location.href.split("#")[0] : undefined; }
+    function authBusy(on) { AUTH.busy = on; document.querySelectorAll("#auth-body button[data-act]").forEach(b => { b.disabled = on; b.classList.toggle("opacity-60", on); }); }
+    function startCooldown() {
+      AUTH.cool = 60; if (AUTH.timer) clearInterval(AUTH.timer);
+      AUTH.timer = setInterval(() => { AUTH.cool--; const b = byId("btn-resend"); if (b) { b.disabled = AUTH.cool > 0; b.textContent = AUTH.cool > 0 ? `Gửi lại sau ${AUTH.cool}s` : "Gửi lại mã"; } if (AUTH.cool <= 0) { clearInterval(AUTH.timer); AUTH.timer = null; } }, 1000);
+    }
+    function renderAuth() {
+      const body = byId("auth-body"), title = byId("auth-title"); if (!body) return;
+      const inp = "w-full px-4 py-2.5 rounded-xl border border-slate-300 bg-white text-sm focus:outline-none focus:border-blue-600 dark:bg-slate-900 dark:border-slate-600 dark:text-white";
+      const lab = "block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1.5 mt-3";
+      const prim = "mt-4 w-full py-2.5 rounded-xl bg-[#1E3A8A] hover:bg-blue-800 text-white font-semibold text-sm transition";
+      const link = "text-xs text-blue-700 dark:text-blue-300 hover:underline";
+      const m = AUTH.mode, em = esc(AUTH.email || "");
+      const tabs = ["login", "signup", "otp"].includes(m) ? `<div class="grid grid-cols-3 gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-700 text-xs font-semibold mb-1" role="tablist">${[["login", "Đăng nhập"], ["signup", "Đăng ký"], ["otp", "Mã / Link email"]].map(([k, l]) => `<button role="tab" aria-selected="${m === k}" onclick="authSet('${k}')" class="py-2 rounded-lg ${m === k ? "bg-white shadow text-[#1E3A8A] dark:bg-slate-900 dark:text-white" : "text-slate-600 dark:text-slate-300"}">${l}</button>`).join("")}</div>` : "";
+      const emailF = `<label for="auth-email" class="${lab}">Email</label><input type="email" id="auth-email" autocomplete="email" value="${em}" placeholder="ban@email.com" class="${inp}" onkeydown="if(event.key==='Enter')authEnter()">`;
+      const passF = (id, label, ac) => `<label for="${id}" class="${lab}">${label}</label><div class="relative"><input type="password" id="${id}" autocomplete="${ac}" class="${inp} pr-12" onkeydown="if(event.key==='Enter')authEnter()"><button type="button" onclick="const i=byId('${id}');i.type=i.type==='password'?'text':'password'" class="absolute right-2 top-1/2 -translate-y-1/2 text-xs px-2 py-1 text-slate-500" aria-label="Hiện/ẩn mật khẩu">👁</button></div>`;
+      let h = "";
+      if (m === "login") { title.textContent = "Đăng nhập"; h = tabs + emailF + passF("auth-pass", "Mật khẩu", "current-password") + `<button data-act onclick="authLogin()" class="${prim}">Đăng nhập</button><div class="mt-3 flex justify-between"><button onclick="authSet('forgot')" class="${link}">Quên mật khẩu?</button><button onclick="authSet('signup')" class="${link}">Chưa có tài khoản? Đăng ký</button></div>`; }
+      else if (m === "signup") { title.textContent = "Tạo tài khoản"; h = tabs + emailF + passF("auth-pass", "Mật khẩu (từ 8 ký tự)", "new-password") + passF("auth-pass2", "Nhập lại mật khẩu", "new-password") + `<button data-act onclick="authSignup()" class="${prim}">Tạo tài khoản</button><p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2">Tiến độ đang có trên máy sẽ được gộp vào tài khoản mới. Có thể cần xác nhận email trước khi đăng nhập.</p>`; }
+      else if (m === "otp") { title.textContent = "Đăng nhập bằng email"; h = tabs + `<p class="text-xs text-slate-600 dark:text-slate-300 mt-2">Không cần mật khẩu: nhận mã 6 số (hoặc link) qua email. Email mới sẽ tự được tạo tài khoản.</p>` + emailF + `<button data-act onclick="authSendOtp()" class="${prim}">Gửi mã / link đăng nhập</button>`; }
+      else if (m === "forgot") { title.textContent = "Quên mật khẩu"; h = `<p class="text-xs text-slate-600 dark:text-slate-300">Nhập email, chúng tôi gửi mã 6 số (hoặc link) để bạn đặt mật khẩu mới.</p>` + emailF + `<button data-act onclick="authForgot()" class="${prim}">Gửi mã đặt lại</button><button onclick="authSet('login')" class="mt-3 ${link}">← Quay lại đăng nhập</button>`; }
+      else if (m === "verify") {
+        title.textContent = "Nhập mã xác nhận";
+        const what = AUTH.pending === "signup" ? "email xác nhận tài khoản" : AUTH.pending === "recovery" ? "email đặt lại mật khẩu" : "email đăng nhập";
+        h = `<div class="text-center text-4xl mb-1">📧</div><p class="text-sm text-center">Đã gửi ${what} tới <strong>${em}</strong>. Kiểm tra cả thư rác.</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Cách chắc chắn nhất: nhập <strong>mã 6 số</strong> trong email (nếu email chỉ có link, hãy mở link ngay trên thiết bị này; mỗi link chỉ dùng 1 lần, hết hạn sau ~1 giờ).</p>
+          ${location.protocol === "file:" ? `<p class="text-xs p-2 rounded-lg bg-amber-50 border border-amber-300 text-amber-900 mt-2">⚠️ App đang mở từ file trên máy nên link không quay lại được. Hãy dùng mã 6 số, hoặc đưa app lên https (GitHub Pages).</p>` : ""}
+          <label for="auth-code" class="${lab}">Mã trong email</label><input id="auth-code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="123456" class="${inp} tracking-widest text-center text-lg" onkeydown="if(event.key==='Enter')verifyCode()">
+          <button data-act id="btn-verify" onclick="verifyCode()" class="${prim}">Xác nhận</button>
+          <div class="mt-3 flex justify-between items-center"><button onclick="authSet('${AUTH.pending === "signup" ? "signup" : AUTH.pending === "recovery" ? "forgot" : "otp"}')" class="${link}">← Đổi email</button><button id="btn-resend" onclick="authResend()" class="${link}" ${AUTH.cool > 0 ? "disabled" : ""}>${AUTH.cool > 0 ? "Gửi lại sau " + AUTH.cool + "s" : "Gửi lại mã"}</button></div>`; }
+      else if (m === "recover") { title.textContent = currentUser ? "Đổi / đặt mật khẩu" : "Đặt mật khẩu mới"; h = `<p class="text-xs text-slate-600 dark:text-slate-300">${currentUser ? "Đăng nhập: <strong>" + esc(currentUser.email) + "</strong>. " : ""}Chọn mật khẩu mới (từ 8 ký tự). Sau đó bạn có thể đăng nhập bằng email + mật khẩu trên mọi thiết bị.</p>` + passF("auth-pass", "Mật khẩu mới", "new-password") + passF("auth-pass2", "Nhập lại mật khẩu mới", "new-password") + `<button data-act onclick="authSetPassword()" class="${prim}">Lưu mật khẩu</button>`; }
+      body.innerHTML = h;
+      const f = body.querySelector("input"); if (f) setTimeout(() => f.focus(), 30);
+    }
+    function authEnter() { const f = { login: authLogin, signup: authSignup, otp: authSendOtp, forgot: authForgot, recover: authSetPassword }[AUTH.mode]; if (f) f(); }
+    function openAuthModal(mode) {
       if (!window._sbClient) window.initSupabaseClient();
-      if (!window._sbClient) {
-        document.getElementById("auth-config-warning").classList.remove("hidden");
-        document.getElementById("btn-send-link").disabled = true;
-        document.getElementById("btn-send-link").classList.add("opacity-50", "cursor-not-allowed");
-      } else {
-        document.getElementById("auth-config-warning").classList.add("hidden");
-        document.getElementById("btn-send-link").disabled = false;
-        document.getElementById("btn-send-link").classList.remove("opacity-50", "cursor-not-allowed");
-      }
+      byId("auth-modal").classList.remove("hidden");
+      byId("auth-config-warning").classList.toggle("hidden", !!window._sbClient);
+      authMsg();
+      AUTH.mode = typeof mode === "string" ? mode : (AUTH.mode === "verify" || AUTH.mode === "recover" ? "login" : AUTH.mode);
+      if (AUTH.mode === "recover" && !currentUser) AUTH.mode = "login";
+      renderAuth();
+      if (!window._sbClient) document.querySelectorAll("#auth-body button[data-act]").forEach(b => { b.disabled = true; b.classList.add("opacity-50"); });
     }
-    function closeAuthModal() {
-      document.getElementById("auth-modal").classList.add("hidden");
+    function closeAuthModal() { byId("auth-modal").classList.add("hidden"); }
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && byId("auth-modal") && !byId("auth-modal").classList.contains("hidden")) closeAuthModal(); });
+    function needClient() { if (!window._sbClient) { authMsg("err", "Chưa cấu hình Supabase (menu ⋯ → Cấu hình đồng bộ)."); return false; } return true; }
+    async function authLogin() {
+      if (!needClient() || AUTH.busy) return; const email = authValEmail(); if (!email) return;
+      const pw = byId("auth-pass").value; if (!pw) { authMsg("err", "Nhập mật khẩu."); return; }
+      authBusy(true); authMsg();
+      try { const { error } = await window._sbClient.auth.signInWithPassword({ email, password: pw }); if (error) throw error; closeAuthModal(); }
+      catch (e) { authMsg("err", authErr(e)); } finally { authBusy(false); }
     }
-
-    async function sendMagicLink() {
-      if (!window._sbClient) {
-        showToast("Chưa cấu hình Supabase", "⚠️");
-        return;
-      }
-      const email = (document.getElementById("auth-email").value || "").trim().toLowerCase();
-      if (!email || !email.includes("@")) {
-        showToast("Nhập email hợp lệ", "⚠️");
-        return;
-      }
-      const btn = document.getElementById("btn-send-link");
-      btn.disabled = true;
-      btn.textContent = "Đang gửi…";
-      document.getElementById("auth-error").classList.add("hidden");
-
+    async function authSignup() {
+      if (!needClient() || AUTH.busy) return; const email = authValEmail(); if (!email) return;
+      const pw = byId("auth-pass").value, pw2 = byId("auth-pass2").value;
+      if (pw.length < 8) { authMsg("err", "Mật khẩu cần từ 8 ký tự."); return; }
+      if (pw !== pw2) { authMsg("err", "Hai mật khẩu chưa khớp."); return; }
+      authBusy(true); authMsg();
       try {
-        const { error } = await window._sbClient.auth.signInWithOtp({
-          email,
-          options: {
-            emailRedirectTo: window.location.href.split("#")[0]
-          }
-        });
+        const { data, error } = await window._sbClient.auth.signUp({ email, password: pw, options: { emailRedirectTo: authRedirect() } });
         if (error) throw error;
-        document.getElementById("auth-form").classList.add("hidden");
-        document.getElementById("auth-sent").classList.remove("hidden");
-        document.getElementById("auth-sent-email").textContent = email;
-        window._authEmail = email;
-      } catch (err) {
-        document.getElementById("auth-error").textContent = err.message || "Gửi link thất bại";
-        document.getElementById("auth-error").classList.remove("hidden");
-      } finally {
-        btn.disabled = false;
-        btn.textContent = "Gửi Magic Link";
-      }
+        if (data && data.session) { closeAuthModal(); showToast("Đã tạo tài khoản", "🎉"); }
+        else if (data && data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) { authMsg("err", "Email này đã có tài khoản. Hãy đăng nhập hoặc chọn Quên mật khẩu."); }
+        else { AUTH.pending = "signup"; startCooldown(); authSet("verify"); authMsg("ok", "Tài khoản đã tạo, cần xác nhận email trước khi đăng nhập."); }
+      } catch (e) { authMsg("err", authErr(e)); } finally { authBusy(false); }
     }
-
+    async function authSendOtp() {
+      if (!needClient() || AUTH.busy) return; const email = authValEmail(); if (!email) return;
+      authBusy(true); authMsg();
+      try { const { error } = await window._sbClient.auth.signInWithOtp({ email, options: { emailRedirectTo: authRedirect() } }); if (error) throw error; AUTH.pending = "magiclink"; startCooldown(); authSet("verify"); }
+      catch (e) { authMsg("err", authErr(e)); } finally { authBusy(false); }
+    }
+    async function authForgot() {
+      if (!needClient() || AUTH.busy) return; const email = authValEmail(); if (!email) return;
+      authBusy(true); authMsg();
+      try { const { error } = await window._sbClient.auth.resetPasswordForEmail(email, { redirectTo: authRedirect() }); if (error) throw error; AUTH.pending = "recovery"; startCooldown(); authSet("verify"); }
+      catch (e) { authMsg("err", authErr(e)); } finally { authBusy(false); }
+    }
+    async function authResend() {
+      if (AUTH.cool > 0 || !AUTH.email || !needClient()) return;
+      try {
+        let r;
+        if (AUTH.pending === "signup") r = await window._sbClient.auth.resend({ type: "signup", email: AUTH.email, options: { emailRedirectTo: authRedirect() } });
+        else if (AUTH.pending === "recovery") r = await window._sbClient.auth.resetPasswordForEmail(AUTH.email, { redirectTo: authRedirect() });
+        else r = await window._sbClient.auth.signInWithOtp({ email: AUTH.email, options: { emailRedirectTo: authRedirect() } });
+        if (r.error) throw r.error;
+        startCooldown(); authMsg("ok", "Đã gửi lại. Hãy dùng mã mới nhất.");
+        const b = byId("btn-resend"); if (b) { b.disabled = true; }
+      } catch (e) { authMsg("err", authErr(e)); }
+    }
+    async function verifyCode() {
+      const code = (byId("auth-code") && byId("auth-code").value || "").replace(/\s/g, "");
+      if (!window._sbClient || !AUTH.email && !window._authEmail) { authMsg("err", "Chưa có email để xác nhận. Hãy gửi mã trước."); return; }
+      if (code.length < 6) { authMsg("err", "Nhập mã gồm 6 số trong email."); return; }
+      const email = AUTH.email || window._authEmail;
+      authBusy(true); authMsg();
+      try {
+        const type = AUTH.pending === "signup" ? "signup" : AUTH.pending === "recovery" ? "recovery" : "email";
+        const { error } = await window._sbClient.auth.verifyOtp({ email, token: code, type });
+        if (error) throw error;
+        if (type === "recovery") { AUTH.pending = null; authSet("recover"); authMsg("ok", "Đã xác nhận. Hãy đặt mật khẩu mới."); }
+        else closeAuthModal();
+      } catch (e) { authMsg("err", authErr(e)); } finally { authBusy(false); }
+    }
+    async function authSetPassword() {
+      if (!needClient() || AUTH.busy) return;
+      const pw = byId("auth-pass").value, pw2 = byId("auth-pass2").value;
+      if (pw.length < 8) { authMsg("err", "Mật khẩu cần từ 8 ký tự."); return; }
+      if (pw !== pw2) { authMsg("err", "Hai mật khẩu chưa khớp."); return; }
+      authBusy(true); authMsg();
+      try { const { error } = await window._sbClient.auth.updateUser({ password: pw }); if (error) throw error; closeAuthModal(); showToast("Đã lưu mật khẩu mới", "🔑"); }
+      catch (e) { authMsg("err", authErr(e)); } finally { authBusy(false); }
+    }
+    function resetLocalProgress() {
+      const seedIds = new Set(SEED_TESTS.map(t => t.id));
+      state.userAnswers = {}; state.checkedSections = {}; state.hintLevels = {}; state.scores = {}; state.totalStudySeconds = 0;
+      state.attempts = []; state.srs = {}; state.exams = []; state.hl = {}; state.lastGraded = {}; state.examLeft = {}; state.customDone = {}; state.mock = null; state.mocks = []; state.vocab = [];
+      state.custom = (state.custom || []).filter(t => seedIds.has(t.id));
+      state.updatedAt = "";
+      delete state.resetAt;
+    }
     async function signOut() {
-      if (window._sbClient) {
-        await window._sbClient.auth.signOut();
+      const had = currentUser;
+      if (had && window._sbClient) { try { if (syncTimer) { clearTimeout(syncTimer); syncTimer = null; } await saveToCloud(); } catch (e) {} }
+      let wipe = false;
+      if (had) {
+        if (cloudDirty) alert("Có dữ liệu chưa kịp đồng bộ lên cloud (có thể do mất mạng). Dữ liệu vẫn được giữ trên máy này; hãy đăng nhập lại và đồng bộ trước khi xóa.");
+        else wipe = confirm("Đăng xuất khỏi " + had.email + ".\n\nTiến độ đã lưu trên cloud. Xóa luôn dữ liệu học trên thiết bị này? (nên chọn OK nếu đây là máy dùng chung)\n\nOK = xóa khỏi máy này  •  Hủy = giữ lại trên máy");
       }
-      currentUser = null;
-      lastSyncUser = null;
+      if (window._sbClient) { try { await window._sbClient.auth.signOut(); } catch (e) {} }
+      currentUser = null; lastSyncUser = null;
+      if (wipe) { resetLocalProgress(); try { localStorage.removeItem(OWNER_KEY); } catch (e) {} saveLocal(); ensureSeeds(); render(); }
       updateAuthUI();
-      showToast("Đã đăng xuất. Tiến độ local vẫn còn.", "👋");
+      showToast(wipe ? "Đã đăng xuất và xóa dữ liệu trên máy này" : "Đã đăng xuất. Tiến độ trên máy vẫn còn.", "👋");
     }
-
+    async function deleteCloudData() {
+      if (!currentUser || !window._sbClient) return;
+      if (!confirm("Xóa toàn bộ tiến độ lưu trên cloud của " + currentUser.email + "?\nDữ liệu trên các thiết bị vẫn còn và sẽ được đẩy lên lại ở lần đồng bộ kế tiếp. Không thể hoàn tác.")) return;
+      const { error } = await window._sbClient.from("user_progress").delete().eq("user_id", currentUser.id);
+      showToast(error ? "Xóa thất bại: " + authErr(error) : "Đã xóa dữ liệu cloud", error ? "⚠️" : "🗑️");
+    }
 
     // ---------- Smart answer ----------
 
@@ -782,10 +854,10 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
       if (badge) {
         if (state.isExamCountdown) {
           badge.textContent = "Exam 20m";
-          badge.className = "text-[10px] uppercase px-1.5 py-0.5 rounded bg-rose-500/30 text-rose-200 font-semibold";
+          badge.className = "hidden sm:inline text-[10px] uppercase px-1.5 py-0.5 rounded bg-rose-500/30 text-rose-200 font-semibold";
         } else {
           badge.textContent = "Study";
-          badge.className = "text-[10px] uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-200 font-semibold";
+          badge.className = "hidden sm:inline text-[10px] uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-200 font-semibold";
         }
       }
     }
@@ -1016,19 +1088,6 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
     // ---------- Exam (Part 3) ----------
 
     // ---------- Auto sync ----------
-    async function verifyCode() {
-      const code = (byId("auth-code").value || "").replace(/\s/g, "");
-      const err = byId("auth-error");
-      if (!window._sbClient || !window._authEmail || code.length < 6) { err.textContent = "Nhập mã gồm 6 số trong email."; err.classList.remove("hidden"); return; }
-      const btn = byId("btn-verify"); btn.disabled = true;
-      try {
-        const { error } = await window._sbClient.auth.verifyOtp({ email: window._authEmail, token: code, type: "email" });
-        if (error) throw error;
-        err.classList.add("hidden");
-        closeAuthModal();
-      } catch (e) { err.textContent = (e.message || "Mã không đúng hoặc đã hết hạn") + ". Nếu email chỉ có link, hãy dùng link."; err.classList.remove("hidden"); }
-      finally { btn.disabled = false; }
-    }
     async function syncNow(manual) {
       if (!window._sbClient || !currentUser) { if (manual) showToast("Hãy đăng nhập trước", "ℹ️"); return false; }
       if (isSyncing) return false;
@@ -1091,7 +1150,7 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
         ${st}
         <div class="flex flex-wrap gap-2">
           ${currentUser
-            ? `<button onclick="syncNow(true)" class="${btn}bg-[#1E3A8A] text-white hover:bg-blue-800">Đồng bộ ngay</button><button onclick="signOut()" class="${btn}bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-white">Đăng xuất</button>`
+            ? `<button onclick="syncNow(true)" class="${btn}bg-[#1E3A8A] text-white hover:bg-blue-800">Đồng bộ ngay</button><button onclick="openAuthModal('recover')" class="${btn}bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-white">🔑 Đổi / đặt mật khẩu</button><button onclick="signOut()" class="${btn}bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-white">Đăng xuất</button><button onclick="deleteCloudData()" class="${btn}bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200">Xóa dữ liệu cloud</button>`
             : `<button onclick="openAuthModal()" class="${btn}bg-[#1E3A8A] text-white hover:bg-blue-800">🔐 Đăng nhập</button>`}
           ${cfg ? `<button onclick="copySetupLink()" class="${btn}bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-white">🔗 Link thiết lập thiết bị khác</button>` : ""}
         </div>
@@ -1162,6 +1221,55 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
       };
       rd.readAsText(f);
     }
+    // ---------- Progress report (standalone HTML, printable to PDF) ----------
+    function exportReport() {
+      const A = state.attempts || [], M = (state.mocks || []).filter(m => m.band).sort((a, b) => a.t - b.t);
+      if (!A.length && !(state.mocks || []).length) { showToast("Chưa có dữ liệu để lập báo cáo", "ℹ️"); return; }
+      const E = x => String(x == null ? "" : x).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+      const fmtD = t => new Date(t).toLocaleDateString("vi-VN");
+      const qs = new Set(A.map(a => a.q)), first = A.filter(a => a.n === 1), firstOk = first.filter(a => a.ok).length;
+      const hrs = state.totalStudySeconds / 3600;
+      const days = new Set(A.map(a => new Date(a.t).toDateString())).size;
+      const sk = skillStats();
+      const skRows = Object.keys(SKILLS).map(k => ({ k, n: sk[k].n, sc: sk[k].score })).filter(x => x.n);
+      const weak = skRows.filter(x => x.sc != null && x.sc < 60).sort((a, b) => a.sc - b.sc);
+      const due = Object.values(state.srs || {}).filter(i => (i.due || 0) <= Date.now()).length;
+      // band trend svg
+      let trend = "<p class='m'>Chưa có bài thi thử đủ 40 câu có quy đổi band.</p>";
+      if (M.length) {
+        const W = 560, H = 190, L = 34, R = 14, T = 14, B = 28, lo = 4, hi = 9;
+        const x = i => L + (M.length === 1 ? (W - L - R) / 2 : i * (W - L - R) / (M.length - 1));
+        const y = v => T + (hi - v) * (H - T - B) / (hi - lo);
+        let g = "";
+        for (let v = lo; v <= hi; v += 1) g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="#e2e8f0"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="#64748b">${v}</text>`;
+        const pts = M.map((m, i) => `${x(i)},${y(+m.band)}`).join(" ");
+        g += `<line x1="${L}" x2="${W - R}" y1="${y(6.5)}" y2="${y(6.5)}" stroke="#f59e0b" stroke-dasharray="4 3"/><text x="${L + 6}" y="${y(6.5) - 4}" font-size="10" fill="#b45309">mục tiêu 6.5</text>`;
+        g += `<polyline points="${pts}" fill="none" stroke="#1E3A8A" stroke-width="2.5"/>`;
+        g += M.map((m, i) => `<circle cx="${x(i)}" cy="${y(+m.band)}" r="4" fill="#1E3A8A"/><text x="${x(i)}" y="${y(+m.band) - 8}" text-anchor="middle" font-size="11" fill="#1E3A8A">${E(m.band)}</text><text x="${x(i)}" y="${H - 8}" text-anchor="middle" font-size="10" fill="#64748b">${E(new Date(m.t).toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit" }))}</text>`).join("");
+        trend = `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Biểu đồ band thi thử theo thời gian">${g}</svg>`;
+      }
+      // last 14 days activity
+      const day0 = new Date(); day0.setHours(0, 0, 0, 0);
+      const act = []; for (let i = 13; i >= 0; i--) { const d0 = day0.getTime() - i * 86400000; act.push({ d: d0, n: A.filter(a => a.t >= d0 && a.t < d0 + 86400000).length }); }
+      const mx = Math.max(1, ...act.map(a => a.n));
+      const actSvg = `<svg viewBox="0 0 560 110" width="100%" role="img" aria-label="Số câu làm mỗi ngày trong 14 ngày">` + act.map((a, i) => { const h = Math.round(70 * a.n / mx); return `<rect x="${10 + i * 39}" y="${80 - h}" width="28" height="${h}" rx="3" fill="${a.n ? "#1E3A8A" : "#e2e8f0"}"/><text x="${24 + i * 39}" y="${76 - h}" text-anchor="middle" font-size="10" fill="#334155">${a.n || ""}</text><text x="${24 + i * 39}" y="98" text-anchor="middle" font-size="9" fill="#64748b">${new Date(a.d).getDate()}/${new Date(a.d).getMonth() + 1}</text>`; }).join("") + `</svg>`;
+      const bar = v => `<span class="bar"><i style="width:${Math.max(2, v)}%;background:${v >= 75 ? "#059669" : v >= 60 ? "#d97706" : "#dc2626"}"></i></span>`;
+      const mockRows = (state.mocks || []).slice().sort((a, b) => b.t - a.t).slice(0, 15).map(m => `<tr><td>${fmtD(m.t)}</td><td>${E((m.ids || []).join(" + "))}</td><td>${m.c}/${m.n}</td><td>${E(m.band || "–")}</td><td>${m.secs ? Math.round(m.secs / 60) + " phút" : "–"}</td></tr>`).join("");
+      const tips = weak.length ? weak.map(w => `<li><b>${E(SKILLS[w.k].name)}</b> (${w.sc}%): luyện thêm các bài thuộc dạng này trong Thư viện, dùng gợi ý ít hơn.</li>`).join("") : "<li>Chưa có kỹ năng nào dưới 60%. Hãy tiếp tục thi thử đủ 40 câu mỗi tuần.</li>";
+      const html = `<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Báo cáo tiến độ IELTS Reading</title>
+<style>body{font:15px/1.5 system-ui,sans-serif;color:#0f172a;max-width:820px;margin:24px auto;padding:0 16px}h1{color:#1E3A8A;margin:0 0 4px}h2{font-size:17px;margin:26px 0 8px;border-bottom:2px solid #e2e8f0;padding-bottom:4px}.m{color:#64748b;font-size:13px}.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.kpi div{border:1px solid #e2e8f0;border-radius:12px;padding:10px 12px}.kpi b{display:block;font-size:22px;color:#1E3A8A}table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px 8px;border-bottom:1px solid #e2e8f0;text-align:left}.bar{display:inline-block;width:120px;height:9px;background:#e2e8f0;border-radius:5px;vertical-align:middle;margin-right:6px}.bar i{display:block;height:100%;border-radius:5px}button{padding:8px 14px;border:0;border-radius:10px;background:#1E3A8A;color:#fff;font-weight:600;cursor:pointer}@media print{button{display:none}body{margin:0}}</style></head><body>
+<h1>Báo cáo tiến độ IELTS Reading</h1><p class="m">Lập ngày ${new Date().toLocaleDateString("vi-VN")}${currentUser ? " • tài khoản " + E(currentUser.email) : ""} <button onclick="print()">In / Lưu PDF</button></p>
+<h2>Tổng quan</h2><div class="kpi"><div><b>${hrs.toFixed(1)} giờ</b>thời gian học</div><div><b>${days}</b>ngày có học</div><div><b>${qs.size}</b>câu đã làm</div><div><b>${first.length ? Math.round(100 * firstOk / first.length) + "%" : "–"}</b>đúng ngay lần đầu</div><div><b>${(state.vocab || []).length}</b>từ trong sổ từ vựng</div><div><b>${due}</b>thẻ ôn đến hạn</div></div>
+<h2>Band thi thử theo thời gian</h2>${trend}
+<h2>Mức thành thạo theo dạng bài</h2>${skRows.length ? `<table><tr><th>Dạng bài</th><th>Điểm gần đây (20 câu cuối)</th><th>Số lượt</th></tr>${skRows.map(r => `<tr><td>${E(SKILLS[r.k].name)}</td><td>${r.sc == null ? "–" : bar(r.sc) + r.sc + "%"}</td><td>${r.n}</td></tr>`).join("")}</table>` : "<p class='m'>Chưa có dữ liệu.</p>"}
+<h2>Hoạt động 14 ngày gần nhất (số câu/ngày)</h2>${actSvg}
+<h2>Các lần thi thử gần đây</h2>${mockRows ? `<table><tr><th>Ngày</th><th>Passage</th><th>Đúng</th><th>Band</th><th>Thời gian</th></tr>${mockRows}</table>` : "<p class='m'>Chưa có.</p>"}
+<h2>Nên tập trung</h2><ul>${tips}</ul>
+<p class="m">Band quy đổi chỉ áp dụng cho đề đủ 40 câu và là ước lượng; bài trong app đơn giản hơn đề thật nên kết quả thật có thể thấp hơn.</p></body></html>`;
+      dl("bao-cao-tien-do-" + dstamp() + ".html", html, "text/html;charset=utf-8");
+      showToast("Đã tải báo cáo tiến độ", "📊");
+    }
+
     function backupHtml() {
       let last = 0; try { last = +localStorage.getItem(BK_KEY) || 0; } catch (e) {}
       const days = last ? Math.floor((Date.now() - last) / 86400000) : null;
@@ -1180,6 +1288,7 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
         </div>
         <div class="flex flex-wrap gap-2 mt-3">
           <button onclick="exportCsv('attempts')" class="${btn}bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200">Xuất lịch sử làm bài (.csv)</button>
+          <button onclick="exportReport()" class="${btn}bg-[#1E3A8A] text-white hover:bg-blue-800">📊 Báo cáo tiến độ (in được PDF)</button>
           <button onclick="exportCsv('mocks')" class="${btn}bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200">Xuất kết quả thi thử (.csv)</button>
         </div>
         <p id="bk-msg" class="text-xs mt-2" role="status"></p>
@@ -1302,18 +1411,39 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
       updateAuthUI();
       if (lastSyncUser === session.user.id) return;
       lastSyncUser = session.user.id;
+      let owner = null; try { owner = JSON.parse(localStorage.getItem(OWNER_KEY) || "null"); } catch (e) {}
+      if (owner && owner.id !== session.user.id && (state.attempts.length || state.vocab.length)) {
+        const merge = confirm("Dữ liệu học trên thiết bị này thuộc tài khoản " + (owner.email || "khác") + ".\n\nOK = gộp vào tài khoản " + session.user.email + " (chỉ chọn nếu cả hai đều là của bạn)\nHủy = bỏ dữ liệu trên máy, chỉ dùng dữ liệu của " + session.user.email);
+        if (!merge) resetLocalProgress();
+      }
+      try { localStorage.setItem(OWNER_KEY, JSON.stringify({ id: session.user.id, email: session.user.email })); } catch (e) {}
       const had = await loadFromCloud();
       ensureSeeds();
       await saveToCloud();
       showToast(had ? "Đã gộp tiến độ với cloud" : "Đã tạo cloud progress cho tài khoản", "☁️");
       render();
     }
+    function authHashError() {
+      try {
+        const h = location.hash || "";
+        if (!/error_code=|error=access_denied/.test(h)) return;
+        const p = new URLSearchParams(h.replace(/^#/, ""));
+        const expired = p.get("error_code") === "otp_expired";
+        history.replaceState(null, "", location.pathname + location.search);
+        setTimeout(() => {
+          showToast(expired ? "Link đăng nhập đã hết hạn hoặc đã bị dùng. Hãy gửi lại và nhập mã 6 số trong email." : "Đăng nhập thất bại: " + (p.get("error_description") || "").replace(/\+/g, " "), "⚠️");
+          if (typeof openAuthModal === "function") openAuthModal();
+        }, 900);
+      } catch (e) {}
+    }
     async function initAuth() {
+      authHashError();
       if (window._sbImported) { window._sbImported = false; setTimeout(() => showToast("Đã nhận cấu hình đồng bộ. Hãy đăng nhập.", "☁️"), 800); }
       if (authSub) { try { authSub.unsubscribe(); } catch (e) {} authSub = null; }
       if (!window._sbClient) { updateAuthUI(); return; }
       const { data } = window._sbClient.auth.onAuthStateChange((event, session) => {
         setTimeout(() => {
+          if (event === "PASSWORD_RECOVERY" && session && session.user) { currentUser = { id: session.user.id, email: session.user.email }; openAuthModal("recover"); }
           if (session && session.user) handleSession(session);
           else if (event === "SIGNED_OUT") { currentUser = null; lastSyncUser = null; updateAuthUI(); }
         }, 0);
@@ -1431,11 +1561,8 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
       return Object.entries(state.srs).filter(([id, it]) => it.due <= now && reg[id]).length + state.vocab.filter(v => v.due <= now).length;
     }
     function updateDueBadge() {
-      const b = byId("due-badge");
-      if (!b) return;
       const n = dueCount();
-      b.textContent = n;
-      b.classList.toggle("hidden", n === 0);
+      document.querySelectorAll(".due-badge").forEach(b => { b.textContent = n; b.classList.toggle("hidden", n === 0); });
     }
     setInterval(updateDueBadge, 60000);
     function reviewQueue() {
@@ -2157,7 +2284,7 @@ PASSAGE:
       });
       const arr = [...m.values()];
       arr.forEach(e => e.tests.sort((a, b) => (a.order || 0) - (b.order || 0)));
-      arr.sort((a, b) => (a.info.id === "_own") - (b.info.id === "_own") || String(a.info.id).localeCompare(String(b.info.id)));
+      arr.sort((a, b) => (a.info.id === "_own") - (b.info.id === "_own") || String(a.info.id).localeCompare(String(b.info.id), undefined, { numeric: true }));
       return arr;
     }
     function nextTestOf(t) {
@@ -2489,6 +2616,89 @@ PASSAGE:
         </div></div>`;
     }
 
+    // ---------- Navigation chrome ----------
+    function toggleMore(ev) { if (ev) ev.stopPropagation(); byId("more-menu").classList.toggle("hidden"); }
+    function closeMore() { const m = byId("more-menu"); if (m) m.classList.add("hidden"); }
+    document.addEventListener("click", e => { const m = byId("more-menu"); if (m && !m.classList.contains("hidden") && !e.target.closest("#btn-more")) m.classList.add("hidden"); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") closeMore(); });
+    function navKey() {
+      const v = state.view;
+      return v === "today" ? "today" : v === "dashboard" ? "dashboard" : (v === "review" || v === "vocab") ? "review" : (v === "mock" || v === "mockSetup") ? "mock" : "library";
+    }
+    function setNav() {
+      const k = navKey();
+      document.querySelectorAll("[data-nav]").forEach(b => { const on = b.dataset.nav === k; b.classList.toggle("active", on); if (on) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
+      const bn = byId("bottom-nav"); if (bn) bn.classList.toggle("hidden", state.view === "mock");
+    }
+    function showToday() { state.view = "today"; render(); }
+
+    // ---------- Today (smart home) ----------
+    function nextLesson() {
+      for (const u of groupUnits()) for (const t of u.tests) if (!state.customDone[t.id] && t.groups.some(g => g.questions.length)) return { t, u };
+      return null;
+    }
+    function smartActions() {
+      const out = [], A = state.attempts, sk = skillStats(), due = dueCount();
+      const doneN = Object.keys(state.customDone).length;
+      const lastMock = (state.mocks || []).slice(-1)[0];
+      const mockAge = lastMock ? Math.floor((Date.now() - lastMock.t) / 86400000) : null;
+      const nl = nextLesson();
+      if (due > 0) out.push({ icon: "🔁", tone: "rose", title: `Ôn ${due} mục đến hạn`, sub: `Khoảng ${Math.max(2, Math.round(due * 0.6))} phút • ôn đúng lúc để không quên`, btn: "Ôn ngay", fn: "showReview()" });
+      if (!A.length && nl) out.push({ icon: "🚀", tone: "blue", title: `Bắt đầu: ${nl.t.title}`, sub: nl.u.info.title, btn: "Bắt đầu học", fn: "continueLearning()" });
+      if (doneN >= 10 && (mockAge === null || mockAge >= 7)) out.push({ icon: "📝", tone: "amber", title: "Làm một đề thi thử đủ 40 câu", sub: lastMock ? `Lần gần nhất ${mockAge} ngày trước (band ${lastMock.band || "–"})` : "Bạn chưa thi thử lần nào • 60 phút, có quy đổi band", btn: "Chọn đề", fn: "showMock()" });
+      const weak = Object.entries(sk).filter(([, v]) => v.n >= 6 && v.score !== null && v.score < 70).sort((a, b) => a[1].score - b[1].score)[0];
+      if (weak) out.push({ icon: "🎯", tone: "violet", title: `Luyện: ${SKILLS[weak[0]].name}`, sub: `Kỹ năng yếu nhất của bạn (${weak[1].score}%)`, btn: "Luyện ngay", fn: `goSkill('${weak[0]}')` });
+      if (nl && A.length) out.push({ icon: "📖", tone: "blue", title: `Học tiếp: ${nl.t.title}`, sub: nl.u.info.title, btn: "Tiếp tục", fn: "continueLearning()" });
+      if (!out.length) out.push({ icon: "🏆", tone: "emerald", title: "Bạn đã hoàn thành mọi bài hiện có", sub: "Thêm bài mới trong Thư viện hoặc làm lại đề thi thử.", btn: "Mở Thư viện", fn: "showLibrary()" });
+      return out;
+    }
+    function renderToday() {
+      const now = Date.now(), todayK = dayKey(now), GOAL = 15;
+      const A = state.attempts, todayN = A.filter(a => dayKey(a.t) === todayK).length;
+      const dset = new Set(A.map(a => dayKey(a.t)));
+      let streak = 0; const dd = new Date(); if (!dset.has(dayKey(dd))) dd.setDate(dd.getDate() - 1);
+      while (dset.has(dayKey(dd))) { streak++; dd.setDate(dd.getDate() - 1); }
+      const firsts = A.filter(a => a.n === 1), firstAcc = firsts.length ? Math.round(100 * firsts.filter(a => a.ok).length / firsts.length) : null;
+      const hr = new Date().getHours(), hello = hr < 12 ? "Chào buổi sáng" : hr < 18 ? "Chào buổi chiều" : "Chào buổi tối";
+      const nm = currentUser ? ", " + esc(currentUser.email.split("@")[0]) : "";
+      const acts = smartActions(), main = acts[0], rest = acts.slice(1, 4);
+      const tone = { rose: "from-rose-600 to-rose-500", blue: "from-[#1E3A8A] to-blue-600", amber: "from-amber-600 to-amber-500", violet: "from-violet-700 to-violet-500", emerald: "from-emerald-700 to-emerald-500" };
+      const pct = Math.min(1, todayN / GOAL), C = 2 * Math.PI * 34;
+      const ring = `<svg viewBox="0 0 80 80" class="w-24 h-24 shrink-0" role="img" aria-label="${todayN} trên ${GOAL} câu hôm nay"><circle cx="40" cy="40" r="34" fill="none" stroke="currentColor" stroke-opacity=".18" stroke-width="8"/><circle cx="40" cy="40" r="34" fill="none" stroke="${pct >= 1 ? "#34D399" : "#FBBF24"}" stroke-width="8" stroke-linecap="round" stroke-dasharray="${(C * pct).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 40 40)"/><text x="40" y="38" text-anchor="middle" font-size="18" font-weight="700" fill="currentColor">${todayN}</text><text x="40" y="52" text-anchor="middle" font-size="9" fill="currentColor" fill-opacity=".8">/${GOAL} câu</text></svg>`;
+      const hero = `<section class="rounded-3xl bg-gradient-to-br ${tone[main.tone]} text-white p-5 sm:p-7 shadow-lg flex flex-wrap items-center gap-5 justify-between">
+        <div class="flex items-start gap-4 min-w-0 flex-1 basis-72"><div class="text-4xl sm:text-5xl leading-none" aria-hidden="true">${main.icon}</div>
+          <div class="min-w-0"><div class="text-[11px] font-bold uppercase tracking-wider text-white/75">Việc nên làm tiếp theo</div>
+          <h2 class="text-xl sm:text-2xl font-bold leading-snug mt-0.5">${esc(main.title)}</h2><p class="text-sm text-white/85 mt-1">${esc(main.sub)}</p>
+          <button onclick="${main.fn}" class="mt-4 px-5 py-2.5 rounded-xl bg-white text-slate-900 font-bold text-sm shadow hover:bg-slate-100">${esc(main.btn)} →</button></div></div>
+        <div class="text-white flex items-center gap-3">${ring}<div class="text-xs text-white/85 leading-relaxed"><div class="font-bold text-sm text-white">Mục tiêu hôm nay</div>${pct >= 1 ? "Đã đạt! 🎉" : `Còn ${GOAL - todayN} câu`}</div></div></section>`;
+      const restHtml = rest.length ? `<section aria-label="Gợi ý khác"><h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 mb-2">Gợi ý khác</h3><div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">${rest.map(r => `<button onclick="${r.fn}" class="text-left p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 hover:shadow dark:bg-slate-800 dark:border-slate-700 flex items-center gap-3"><span class="text-2xl" aria-hidden="true">${r.icon}</span><span class="min-w-0"><span class="block text-sm font-semibold truncate">${esc(r.title)}</span><span class="block text-xs text-slate-500 dark:text-slate-400 truncate">${esc(r.sub)}</span></span></button>`).join("")}</div></section>` : "";
+      const M = (state.mocks || []).filter(m => m.band), lm = M[M.length - 1], pm = M[M.length - 2];
+      const delta = lm && pm ? (+lm.band - +pm.band) : null;
+      const tile = (ic, label, val, sub, cls) => `<div class="p-4 rounded-2xl border ${cls}"><div class="flex items-center gap-1.5 text-[11px] font-bold uppercase opacity-80"><span aria-hidden="true">${ic}</span>${label}</div><div class="text-2xl font-extrabold mt-1">${val}</div><div class="text-[11px] opacity-75 mt-0.5">${sub}</div></div>`;
+      const tiles = `<div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        ${tile("🔥", "Streak", `${streak} ngày`, streak ? "Học liên tục, giữ nhịp nhé" : "Làm 1 câu để bắt đầu", "bg-amber-50 border-amber-200 text-amber-900 dark:bg-amber-900/25 dark:border-amber-700 dark:text-amber-100")}
+        ${tile("✅", "Đúng lần đầu", firstAcc === null ? "—" : firstAcc + "%", `${firsts.length} câu đã làm`, "bg-emerald-50 border-emerald-200 text-emerald-900 dark:bg-emerald-900/25 dark:border-emerald-700 dark:text-emerald-100")}
+        ${tile("🎓", "Band thi thử", lm ? lm.band : "—", lm ? (delta === null ? "Lần đầu có band" : (delta > 0 ? "▲ +" : delta < 0 ? "▼ " : "= ") + delta.toFixed(1) + " so với lần trước") : "Chưa thi đủ 40 câu", "bg-blue-50 border-blue-200 text-blue-900 dark:bg-blue-900/25 dark:border-blue-700 dark:text-blue-100")}
+        ${tile("⏱", "Thời gian học", Math.floor(state.totalStudySeconds / 3600) ? Math.floor(state.totalStudySeconds / 3600) + "h " + Math.floor(state.totalStudySeconds / 60 % 60) + "m" : Math.floor(state.totalStudySeconds / 60) + "m", "Tổng cộng", "bg-violet-50 border-violet-200 text-violet-900 dark:bg-violet-900/25 dark:border-violet-700 dark:text-violet-100")}</div>`;
+      const quick = [["🗂", "Chọn bài", "openPicker()"], ["📝", "Thi thử 40 câu", "showMock()"], ["🔤", "Sổ từ vựng", "showVocab()"], ["📊", "Tiến độ chi tiết", "showDashboard()"]]
+        .map(q => `<button onclick="${q[2]}" class="p-3 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 hover:shadow text-center dark:bg-slate-800 dark:border-slate-700"><div class="text-2xl" aria-hidden="true">${q[0]}</div><div class="text-xs font-semibold mt-1">${q[1]}</div></button>`).join("");
+      const days = []; for (let i = 6; i >= 0; i--) { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - i); days.push({ k: dayKey(d), l: ["CN", "T2", "T3", "T4", "T5", "T6", "T7"][d.getDay()], n: 0 }); }
+      A.forEach(a => { const o = days.find(x => x.k === dayKey(a.t)); if (o) o.n++; });
+      const mx = Math.max(GOAL, ...days.map(d => d.n));
+      const week = `<div class="flex items-end gap-2 h-24" role="img" aria-label="Số câu làm mỗi ngày trong 7 ngày">${days.map(d => `<div class="flex-1 flex flex-col items-center justify-end gap-1 h-full"><span class="text-[10px] text-slate-500">${d.n || ""}</span><div class="w-full rounded-md ${d.n >= GOAL ? "bg-emerald-500" : d.n ? "bg-blue-500" : "bg-slate-200 dark:bg-slate-700"}" style="height:${Math.max(4, Math.round(64 * d.n / mx))}px"></div><span class="text-[10px] text-slate-500">${d.l}</span></div>`).join("")}</div>`;
+      const units = groupUnits().map(u => { const g = u.tests.filter(t => t.groups.some(x => x.questions.length)), d = g.filter(t => state.customDone[t.id]).length; return { title: u.info.title, n: g.length, d }; }).filter(u => u.n);
+      const path = units.map(u => { const p = Math.round(100 * u.d / u.n); return `<button onclick="showLibrary()" class="w-full text-left"><div class="flex justify-between text-xs mb-1"><span class="font-semibold truncate pr-2">${esc(u.title)}</span><span class="text-slate-500 shrink-0">${u.d}/${u.n}</span></div><div class="h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden"><div class="h-2 rounded-full ${p === 100 ? "bg-emerald-500" : "bg-blue-600"}" style="width:${p}%"></div></div></button>`; }).join("");
+      const card = "p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700";
+      return `<div class="space-y-5 fade-in">
+        <div><h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">${hello}${nm} 👋</h1><p class="text-sm text-slate-500 dark:text-slate-400">Chỉ cần làm theo gợi ý bên dưới, app đã chọn bài phù hợp nhất cho bạn lúc này.</p></div>
+        ${hero}${restHtml}${tiles}
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">${quick}</div>
+        <div class="grid gap-4 lg:grid-cols-5 items-start">
+          <section class="${card} lg:col-span-2"><h3 class="font-bold mb-3">7 ngày gần đây</h3>${week}</section>
+          <section class="${card} lg:col-span-3"><div class="flex items-center justify-between mb-3"><h3 class="font-bold">Lộ trình học</h3><button onclick="showLibrary()" class="text-xs font-semibold text-blue-700 dark:text-blue-300 hover:underline">Xem Thư viện</button></div><div class="space-y-2.5 max-h-72 overflow-y-auto pr-1">${path || '<p class="text-sm text-slate-500">Chưa có bài.</p>'}</div></section>
+        </div></div>`;
+    }
+
     // ---------- Render ----------
     function render() {
       const container = byId("app-container");
@@ -2499,7 +2709,8 @@ PASSAGE:
       const pS = oldPane ? oldPane.scrollTop : 0, qS = oldQ ? oldQ.scrollTop : 0;
       snapshotPane();
       let html = "";
-      if (state.view === "dashboard") html = renderDashboard();
+      if (state.view === "today") html = renderToday();
+      else if (state.view === "dashboard") html = renderDashboard();
       else if (state.view === "review") html = renderReview();
       else if (state.view === "vocab") html = renderVocab();
       else if (state.view === "custom" || state.view === "mock") html = renderCustom();
@@ -2517,6 +2728,7 @@ PASSAGE:
         if (nq) nq.scrollTop = qS;
       } else window.scrollTo(0, 0);
       updateDueBadge();
+      setNav();
     }
 
     // ---------- Lesson picker (modal) ----------
