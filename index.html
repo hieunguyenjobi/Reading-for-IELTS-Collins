@@ -79,10 +79,27 @@
     window.SB_CONFIG_KEY = "collins_sb_config_v3";
     window._sbClient = null;
 
+    // Điền sẵn nếu bạn tự host: mọi người mở app sẽ dùng chung dự án Supabase này (anon key là public theo thiết kế).
+    window.SB_DEFAULT = { url: "", key: "" };
+    // Link thiết lập thiết bị: https://.../index.html#sb=<base64>
+    try {
+      const m = /^#sb=([A-Za-z0-9_\-]+)$/.exec(location.hash || "");
+      if (m) {
+        const o = JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g, "+").replace(/_/g, "/")))));
+        let host = ""; try { host = new URL(o.u).host; } catch (e) {}
+        if (o && /^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(o.u || "") && o.k && String(o.k).length > 30 &&
+            confirm("Liên kết thiết lập đồng bộ tới dự án Supabase:\n" + host + "\n\nChỉ đồng ý nếu chính bạn tạo liên kết này. Tiến độ học sẽ được lưu ở dự án đó.")) {
+          localStorage.setItem(window.SB_CONFIG_KEY, JSON.stringify({ url: o.u, key: o.k }));
+          window._sbImported = true;
+        }
+      }
+      if (m) history.replaceState(null, "", location.pathname + location.search);
+    } catch (e) {}
+
     window.getSavedSbConfig = function () {
       try {
         const raw = localStorage.getItem(window.SB_CONFIG_KEY);
-        if (!raw) return null;
+        if (!raw) return (window.SB_DEFAULT.url && window.SB_DEFAULT.key) ? window.SB_DEFAULT : null;
         const cfg = JSON.parse(raw);
         if (cfg && cfg.url && cfg.key && !String(cfg.url).includes("YOUR_PROJECT") && !String(cfg.key).includes("YOUR_ANON")) {
           return cfg;
@@ -283,6 +300,11 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
           <div class="text-4xl">📧</div>
           <p class="text-sm text-slate-700 dark:text-slate-200">Đã gửi link đăng nhập đến <strong id="auth-sent-email"></strong></p>
           <p class="text-xs text-slate-500 dark:text-slate-400">Kiểm tra hộp thư (và cả spam). Click vào link để đăng nhập. Có thể đóng cửa sổ này.</p>
+          <div class="text-left">
+            <label for="auth-code" class="block text-xs font-bold text-slate-600 dark:text-slate-400 mb-1.5">Hoặc nhập mã 6 số trong email (hữu ích khi dùng app cài trên điện thoại)</label>
+            <div class="flex gap-2"><input id="auth-code" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="123456" class="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 bg-white text-sm tracking-widest dark:bg-slate-900 dark:border-slate-600 dark:text-white" />
+            <button onclick="verifyCode()" id="btn-verify" class="px-4 py-2.5 rounded-xl bg-[#1E3A8A] hover:bg-blue-800 text-white font-semibold text-sm">Xác nhận</button></div>
+          </div>
           <button onclick="closeAuthModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold dark:bg-slate-700 dark:text-white">Đóng</button>
         </div>
 
@@ -461,6 +483,7 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
     let currentUser = null; // { id, email }
     let syncTimer = null;
     let isSyncing = false;
+    let lastSyncAt = 0, cloudDirty = false, retryTimer = null;
 
     let state = {
       unit: 1,
@@ -532,12 +555,15 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
           }, { onConflict: "user_id" });
         if (error) throw error;
         saveLocal(); // also keep local backup
+        cloudDirty = false; lastSyncAt = Date.now();
         updateSyncStatus("synced");
       } catch (err) {
         console.error("Cloud save failed", err);
         saveLocal();
         updateSyncStatus("error");
-        showToast("Lưu cloud thất bại, đã lưu local", "⚠️");
+        showToast("Lưu cloud thất bại, đã lưu local. Sẽ tự thử lại.", "⚠️");
+        if (retryTimer) clearTimeout(retryTimer);
+        retryTimer = setTimeout(() => { retryTimer = null; if (currentUser) saveToCloud(); }, 30000);
       } finally {
         isSyncing = false;
       }
@@ -555,7 +581,7 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
         el.textContent = "Syncing…";
         el.className = "px-2.5 py-1 rounded-md bg-amber-100 text-amber-800 font-medium";
       } else if (mode === "synced") {
-        el.textContent = "✓ Synced";
+        el.textContent = "✓ Synced" + (lastSyncAt ? " " + new Date(lastSyncAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "");
         el.className = "px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800 font-medium";
       } else if (mode === "error") {
         el.textContent = "Sync error (local saved)";
@@ -703,6 +729,7 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
         document.getElementById("auth-form").classList.add("hidden");
         document.getElementById("auth-sent").classList.remove("hidden");
         document.getElementById("auth-sent-email").textContent = email;
+        window._authEmail = email;
       } catch (err) {
         document.getElementById("auth-error").textContent = err.message || "Gửi link thất bại";
         document.getElementById("auth-error").classList.remove("hidden");
@@ -988,6 +1015,91 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
 
     // ---------- Exam (Part 3) ----------
 
+    // ---------- Auto sync ----------
+    async function verifyCode() {
+      const code = (byId("auth-code").value || "").replace(/\s/g, "");
+      const err = byId("auth-error");
+      if (!window._sbClient || !window._authEmail || code.length < 6) { err.textContent = "Nhập mã gồm 6 số trong email."; err.classList.remove("hidden"); return; }
+      const btn = byId("btn-verify"); btn.disabled = true;
+      try {
+        const { error } = await window._sbClient.auth.verifyOtp({ email: window._authEmail, token: code, type: "email" });
+        if (error) throw error;
+        err.classList.add("hidden");
+        closeAuthModal();
+      } catch (e) { err.textContent = (e.message || "Mã không đúng hoặc đã hết hạn") + ". Nếu email chỉ có link, hãy dùng link."; err.classList.remove("hidden"); }
+      finally { btn.disabled = false; }
+    }
+    async function syncNow(manual) {
+      if (!window._sbClient || !currentUser) { if (manual) showToast("Hãy đăng nhập trước", "ℹ️"); return false; }
+      if (isSyncing) return false;
+      const ae = document.activeElement;
+      const busy = (state.mock && !state.mock.submitted) || (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName));
+      if (busy && !manual) return false;
+      if (syncTimer) { clearTimeout(syncTimer); syncTimer = null; }
+      isSyncing = true; updateSyncStatus("syncing");
+      let changed = false;
+      try {
+        const { data, error } = await window._sbClient.from("user_progress").select("data").eq("user_id", currentUser.id).maybeSingle();
+        if (error) throw error;
+        const cloud = data && data.data;
+        const sig = () => state.attempts.length + "|" + Object.keys(state.userAnswers).length + "|" + state.mocks.length + "|" + state.vocab.length + "|" + state.custom.length + "|" + state.updatedAt;
+        const before = sig(), u = state.unit, p = state.part;
+        if (cloud) { applyProgressPayload(mergeProgress(getProgressPayload(), cloud)); state.unit = u; state.part = p; ensureSeeds(); }
+        changed = sig() !== before;
+        const needPush = cloudDirty || !cloud || (cloud.updatedAt || "") !== (state.updatedAt || "");
+        isSyncing = false;
+        if (needPush) await saveToCloud(); else { saveLocal(); lastSyncAt = Date.now(); updateSyncStatus("synced"); }
+        if (changed && !(state.mock && !state.mock.submitted)) render();
+        else if (state.view === "library") render();
+        if (manual) showToast(changed ? "Đã cập nhật tiến độ từ thiết bị khác" : "Đã đồng bộ", "☁️");
+        return true;
+      } catch (e) {
+        console.error("syncNow failed", e); isSyncing = false;
+        updateSyncStatus("error");
+        if (manual) showToast("Đồng bộ lỗi: " + (e.message || e), "⚠️");
+        return false;
+      }
+    }
+    function flushSync() {
+      if (!currentUser || !window._sbClient) return;
+      if (syncTimer) { clearTimeout(syncTimer); syncTimer = null; saveToCloud(); }
+    }
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flushSync(); else syncNow(false); });
+    window.addEventListener("pagehide", flushSync);
+    window.addEventListener("online", () => syncNow(false));
+    setInterval(() => { if (document.visibilityState === "visible" && currentUser) syncNow(false); }, 90000);
+    function setupLink() {
+      const cfg = window.getSavedSbConfig();
+      if (!cfg) { showToast("Chưa cấu hình Supabase", "ℹ️"); return ""; }
+      const b64 = btoa(unescape(encodeURIComponent(JSON.stringify({ u: String(cfg.url).trim().replace(/\/$/, ""), k: String(cfg.key).trim() })))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+      return location.href.split("#")[0] + "#sb=" + b64;
+    }
+    function copySetupLink() {
+      const l = setupLink(); if (!l) return;
+      const box = byId("sync-link"); if (box) { box.value = l; box.classList.remove("hidden"); box.select(); }
+      try { navigator.clipboard.writeText(l).then(() => showToast("Đã chép link thiết lập", "🔗"), () => {}); } catch (e) {}
+    }
+    function syncPanelHtml() {
+      const btn = "px-4 py-2 rounded-xl text-sm font-semibold ";
+      const cfg = window.getSavedSbConfig();
+      const st = currentUser
+        ? `<p class="text-sm mb-2">Đang đăng nhập: <strong>${esc(currentUser.email)}</strong>${lastSyncAt ? " • đồng bộ lúc " + new Date(lastSyncAt).toLocaleTimeString() : ""}</p>`
+        : `<p class="text-sm mb-2">${cfg ? "Chưa đăng nhập. Đăng nhập để tiến độ học theo bạn trên mọi thiết bị." : "Chưa bật đồng bộ cloud. Bấm ⚙️ Config để nhập Supabase, rồi Đăng nhập."}</p>`;
+      return `<section class="mt-6 p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700" aria-labelledby="sy-h">
+        <h2 id="sy-h" class="text-lg font-bold mb-1">☁️ Tài khoản học & đồng bộ</h2>
+        <p class="text-xs text-slate-600 dark:text-slate-300 mb-2">Tiến độ (đáp án, lịch sử, thẻ ôn, từ vựng, thi thử) tự gộp giữa các thiết bị mỗi khi bạn mở lại tab, có mạng lại, hoặc mỗi 90 giây. Không bao giờ ghi đè mất dữ liệu: hai bên được gộp.</p>
+        ${st}
+        <div class="flex flex-wrap gap-2">
+          ${currentUser
+            ? `<button onclick="syncNow(true)" class="${btn}bg-[#1E3A8A] text-white hover:bg-blue-800">Đồng bộ ngay</button><button onclick="signOut()" class="${btn}bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-white">Đăng xuất</button>`
+            : `<button onclick="openAuthModal()" class="${btn}bg-[#1E3A8A] text-white hover:bg-blue-800">🔐 Đăng nhập</button>`}
+          ${cfg ? `<button onclick="copySetupLink()" class="${btn}bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-white">🔗 Link thiết lập thiết bị khác</button>` : ""}
+        </div>
+        <input id="sync-link" readonly class="hidden mt-2 w-full px-3 py-2 rounded-xl border border-slate-300 text-[11px] font-mono dark:bg-slate-900 dark:border-slate-600 dark:text-white" aria-label="Link thiết lập">
+        ${cfg ? `<p class="text-[11px] text-slate-500 mt-1">Mở link trên điện thoại/máy khác để tự điền cấu hình Supabase, sau đó đăng nhập cùng email. Link chứa anon key (công khai theo thiết kế của Supabase) nhưng đừng đăng công khai.</p>` : ""}
+      </section>`;
+    }
+
     // ---------- Backup / export progress ----------
     const BK_KEY = "ielts_last_backup";
     function dl(name, text, type) {
@@ -1161,6 +1273,7 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
       return out;
     }
     function scheduleSave(noStamp) {
+      cloudDirty = true;
       if (!noStamp) state.updatedAt = new Date().toISOString();
       saveLocal();
       if (syncTimer) clearTimeout(syncTimer);
@@ -1196,6 +1309,7 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
       render();
     }
     async function initAuth() {
+      if (window._sbImported) { window._sbImported = false; setTimeout(() => showToast("Đã nhận cấu hình đồng bộ. Hãy đăng nhập.", "☁️"), 800); }
       if (authSub) { try { authSub.unsubscribe(); } catch (e) {} authSub = null; }
       if (!window._sbClient) { updateAuthUI(); return; }
       const { data } = window._sbClient.auth.onAuthStateChange((event, session) => {
@@ -2117,7 +2231,7 @@ PASSAGE:
             <button onclick="fillSample()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold dark:bg-slate-700 dark:text-white">Điền mẫu</button>
             <button onclick="restoreSeeds()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold dark:bg-slate-700 dark:text-white">Khôi phục bài Collins Unit 1–2</button></div>
           <p id="lib-msg" class="text-xs mt-2 whitespace-pre-wrap" role="status"></p>
-        </section>${backupHtml()}</div>`;
+        </section>${syncPanelHtml()}${backupHtml()}</div>`;
     }
 
     // ---------- Exercise / passage view ----------
