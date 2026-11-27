@@ -151,20 +151,20 @@
 <path d="M132 152L206 112L252 138L352 72" fill="none" stroke="#F59E0B" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M304 66L362 62L350 120" fill="none" stroke="#F59E0B" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span class="min-w-0">
-          <span class="flex items-center gap-2"><span class="font-bold text-sm sm:text-lg tracking-tight leading-tight whitespace-nowrap">IELTS Reading</span><span class="hidden sm:inline-block text-[10px] uppercase tracking-wider bg-amber-400/20 text-amber-200 border border-amber-300/30 px-1.5 py-0.5 rounded-full font-semibold">v5</span></span>
-          <span class="hidden sm:block text-[11px] text-blue-200 leading-tight">Collins • lộ trình band 5.5 → 6.5+</span>
+          <span class="flex items-center gap-2"><span class="font-bold text-sm sm:text-lg tracking-tight leading-tight whitespace-nowrap">IELTS Reading</span><span class="hidden xl:inline-block text-[10px] uppercase tracking-wider bg-amber-400/20 text-amber-200 border border-amber-300/30 px-1.5 py-0.5 rounded-full font-semibold">v5</span></span>
+          <span class="hidden xl:block text-[11px] text-blue-200 leading-tight">Collins • lộ trình band 5.5 → 6.5+</span>
         </span>
       </button>
-      <nav class="hidden md:flex items-center gap-1 ml-4" aria-label="Điều hướng chính"><button data-nav="today" onclick="showToday()" class="nav-t relative flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold text-blue-100 hover:bg-white/10 transition"><span aria-hidden="true">🏠</span><span>Hôm nay</span></button><button data-nav="library" onclick="showLibrary()" class="nav-t relative flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold text-blue-100 hover:bg-white/10 transition"><span aria-hidden="true">📚</span><span>Thư viện</span></button><button data-nav="mock" onclick="showMock()" class="nav-t relative flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold text-blue-100 hover:bg-white/10 transition"><span aria-hidden="true">📝</span><span>Thi thử</span></button><button data-nav="review" onclick="showReview()" class="nav-t relative flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold text-blue-100 hover:bg-white/10 transition"><span aria-hidden="true">🔁</span><span>Ôn tập</span><span class="due-badge hidden min-w-[18px] text-center text-[10px] font-bold bg-rose-500 text-white rounded-full px-1.5 py-0.5"></span></button><button data-nav="dashboard" onclick="showDashboard()" class="nav-t relative flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold text-blue-100 hover:bg-white/10 transition"><span aria-hidden="true">📊</span><span>Tiến độ</span></button></nav>
+      <nav class="hidden lg:flex items-center gap-1 ml-4" aria-label="Điều hướng chính"><button data-nav="today" onclick="showToday()" class="nav-t relative flex items-center gap-1.5 px-2.5 lg:px-3 py-2 whitespace-nowrap rounded-xl text-sm font-semibold text-blue-100 hover:bg-white/10 transition"><span aria-hidden="true">🏠</span><span>Hôm nay</span></button><button data-nav="library" onclick="showLibrary()" class="nav-t relative flex items-center gap-1.5 px-2.5 lg:px-3 py-2 whitespace-nowrap rounded-xl text-sm font-semibold text-blue-100 hover:bg-white/10 transition"><span aria-hidden="true">📚</span><span>Thư viện</span></button><button data-nav="mock" onclick="showMock()" class="nav-t relative flex items-center gap-1.5 px-2.5 lg:px-3 py-2 whitespace-nowrap rounded-xl text-sm font-semibold text-blue-100 hover:bg-white/10 transition"><span aria-hidden="true">📝</span><span>Thi thử</span></button><button data-nav="review" onclick="showReview()" class="nav-t relative flex items-center gap-1.5 px-2.5 lg:px-3 py-2 whitespace-nowrap rounded-xl text-sm font-semibold text-blue-100 hover:bg-white/10 transition"><span aria-hidden="true">🔁</span><span>Ôn tập</span><span class="due-badge hidden min-w-[18px] text-center text-[10px] font-bold bg-rose-500 text-white rounded-full px-1.5 py-0.5"></span></button><button data-nav="dashboard" onclick="showDashboard()" class="nav-t relative flex items-center gap-1.5 px-2.5 lg:px-3 py-2 whitespace-nowrap rounded-xl text-sm font-semibold text-blue-100 hover:bg-white/10 transition"><span aria-hidden="true">📊</span><span>Tiến độ</span></button></nav>
       <div class="flex items-center gap-1.5 sm:gap-2 ml-auto">
         <div class="flex items-center gap-1.5 bg-blue-950/50 border border-white/15 px-2.5 py-1.5 rounded-xl" title="Thời gian học phiên này">
           <span id="timer-display" class="font-mono text-xs sm:text-sm font-bold tracking-wider">00:00</span>
-          <span id="timer-mode-badge" class="hidden sm:inline text-[10px] uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-200 font-semibold">Study</span>
-          <button onclick="toggleTimerPause()" id="btn-timer-pause" title="Tạm dừng / tiếp tục" class="hidden sm:inline text-xs text-blue-200 hover:text-white">⏸</button>
+          <span id="timer-mode-badge" class="hidden xl:inline text-[10px] uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-200 font-semibold">Study</span>
+          <button onclick="toggleTimerPause()" id="btn-timer-pause" title="Tạm dừng / tiếp tục" class="hidden lg:inline text-xs text-blue-200 hover:text-white">⏸</button>
         </div>
-        <button onclick="openPicker()" class="flex items-center gap-1.5 bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-sm px-2.5 sm:px-3 py-2 rounded-xl transition" title="Chọn bài để học (Ctrl+K)"><span aria-hidden="true">🗂</span><span class="hidden sm:inline">Chọn bài</span></button>
+        <button onclick="openPicker()" class="flex items-center gap-1.5 bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-sm px-2.5 sm:px-3 py-2 rounded-xl transition" title="Chọn bài để học (Ctrl+K)"><span aria-hidden="true">🗂</span><span class="hidden lg:inline whitespace-nowrap">Chọn bài</span></button>
         <div id="auth-status" class="flex items-center gap-2">
-          <button onclick="openAuthModal()" id="btn-login" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/20 font-semibold text-sm px-2.5 sm:px-3 py-2 rounded-xl transition" title="Đăng nhập để đồng bộ"><span aria-hidden="true">🔐</span><span class="hidden lg:inline">Đăng nhập</span></button>
+          <button onclick="openAuthModal()" id="btn-login" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/20 font-semibold text-sm px-2.5 sm:px-3 py-2 rounded-xl transition" title="Đăng nhập để đồng bộ"><span aria-hidden="true">🔐</span><span class="hidden xl:inline whitespace-nowrap">Đăng nhập</span></button>
           <div id="user-badge" class="hidden items-center gap-1.5 bg-emerald-500/20 border border-emerald-400/40 px-2.5 py-1.5 rounded-xl">
             <span id="user-email-short" class="text-xs font-medium text-emerald-100 max-w-[90px] sm:max-w-[140px] truncate"></span>
             <button onclick="signOut()" class="text-xs text-emerald-200 hover:text-white" title="Đăng xuất" aria-label="Đăng xuất">⎋</button>
@@ -184,19 +184,19 @@
     <div class="bg-white/95 border-b border-slate-200 text-slate-700 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200" id="subnav">
       <div class="max-w-7xl mx-auto px-3 sm:px-6 py-1.5 flex items-center justify-between gap-3 text-xs">
         <span class="hidden sm:inline text-slate-500 dark:text-slate-400">Mẹo: <kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 font-mono">Ctrl</kbd>+<kbd class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 font-mono">K</kbd> để chọn bài nhanh</span>
-        <span id="sync-status" class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 font-medium dark:bg-slate-700 dark:text-slate-300">Guest mode</span>
+        <span id="sync-status" class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 font-medium dark:bg-slate-700 dark:text-slate-300">Chế độ khách</span>
       </div>
     </div>
   </header>
-  <nav id="bottom-nav" class="md:hidden fixed bottom-0 inset-x-0 z-40 grid grid-cols-5 bg-white/95 backdrop-blur border-t border-slate-200 dark:bg-slate-900/95 dark:border-slate-700 pb-[env(safe-area-inset-bottom)]" aria-label="Điều hướng chính"><button data-nav="today" onclick="showToday()" class="nav-b relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400"><span class="text-xl leading-none" aria-hidden="true">🏠</span><span>Hôm nay</span></button><button data-nav="library" onclick="showLibrary()" class="nav-b relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400"><span class="text-xl leading-none" aria-hidden="true">📚</span><span>Thư viện</span></button><button data-nav="mock" onclick="showMock()" class="nav-b relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400"><span class="text-xl leading-none" aria-hidden="true">📝</span><span>Thi thử</span></button><button data-nav="review" onclick="showReview()" class="nav-b relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400"><span class="text-xl leading-none" aria-hidden="true">🔁</span><span>Ôn tập</span><span class="due-badge hidden absolute top-1 left-1/2 ml-2 min-w-[16px] text-center text-[10px] font-bold bg-rose-500 text-white rounded-full px-1">0</span></button><button data-nav="dashboard" onclick="showDashboard()" class="nav-b relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400"><span class="text-xl leading-none" aria-hidden="true">📊</span><span>Tiến độ</span></button></nav>
+  <nav id="bottom-nav" class="lg:hidden fixed bottom-0 inset-x-0 z-40 grid grid-cols-5 bg-white/95 backdrop-blur border-t border-slate-200 dark:bg-slate-900/95 dark:border-slate-700 pb-[env(safe-area-inset-bottom)]" aria-label="Điều hướng chính"><button data-nav="today" onclick="showToday()" class="nav-b relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400"><span class="text-xl leading-none" aria-hidden="true">🏠</span><span>Hôm nay</span></button><button data-nav="library" onclick="showLibrary()" class="nav-b relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400"><span class="text-xl leading-none" aria-hidden="true">📚</span><span>Thư viện</span></button><button data-nav="mock" onclick="showMock()" class="nav-b relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400"><span class="text-xl leading-none" aria-hidden="true">📝</span><span>Thi thử</span></button><button data-nav="review" onclick="showReview()" class="nav-b relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400"><span class="text-xl leading-none" aria-hidden="true">🔁</span><span>Ôn tập</span><span class="due-badge hidden absolute top-1 left-1/2 ml-2 min-w-[16px] text-center text-[10px] font-bold bg-rose-500 text-white rounded-full px-1">0</span></button><button data-nav="dashboard" onclick="showDashboard()" class="nav-b relative flex flex-col items-center justify-center gap-0.5 py-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400"><span class="text-xl leading-none" aria-hidden="true">📊</span><span>Tiến độ</span></button></nav>
 
   <!-- TOAST -->
-  <div id="toast-box" class="fixed bottom-20 md:bottom-5 right-4 md:right-5 z-50 hidden max-w-sm bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl border border-slate-700 flex items-center gap-3">
+  <div id="toast-box" class="fixed bottom-20 lg:bottom-5 right-4 lg:right-5 z-50 hidden max-w-sm bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl border border-slate-700 flex items-center gap-3">
     <span id="toast-icon" class="text-lg">💡</span>
     <p id="toast-msg" class="text-xs sm:text-sm font-medium"></p>
   </div>
 
-  <main id="app-container" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 pb-24 md:pb-6"></main>
+  <main id="app-container" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 pb-24 lg:pb-6"></main>
 
   <!-- CONFIG MODAL (Supabase URL + Anon Key) -->
   <div id="config-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -539,19 +539,19 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
       const el = document.getElementById("sync-status");
       if (!el) return;
       if (mode === "guest") {
-        el.textContent = "Guest mode (local only)";
+        el.textContent = "Chế độ khách (chỉ lưu trên máy)";
         el.className = "px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 font-medium dark:bg-slate-700 dark:text-slate-300";
       } else if (mode === "syncing") {
-        el.textContent = "Syncing…";
+        el.textContent = "Đang đồng bộ…";
         el.className = "px-2.5 py-1 rounded-md bg-amber-100 text-amber-800 font-medium";
       } else if (mode === "synced") {
-        el.textContent = "✓ Synced" + (lastSyncAt ? " " + new Date(lastSyncAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "");
+        el.textContent = "✓ Đã đồng bộ" + (lastSyncAt ? " " + new Date(lastSyncAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "");
         el.className = "px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800 font-medium";
       } else if (mode === "error") {
-        el.textContent = "Sync error (local saved)";
+        el.textContent = "Lỗi đồng bộ (đã lưu trên máy)";
         el.className = "px-2.5 py-1 rounded-md bg-rose-100 text-rose-800 font-medium";
       } else if (mode === "loggedin") {
-        el.textContent = "Logged in • Cloud";
+        el.textContent = "Đã đăng nhập • Cloud";
         el.className = "px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800 font-medium";
       }
     }
@@ -637,7 +637,7 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
       document.getElementById("cfg-url").value = "";
       document.getElementById("cfg-key").value = "";
       const status = document.getElementById("cfg-status");
-      status.textContent = "Đã xóa cấu hình. App chuyển về Guest mode.";
+      status.textContent = "Đã xóa cấu hình. App chuyển về chế độ khách.";
       status.className = "p-3 rounded-xl text-xs bg-slate-100 border border-slate-300 text-slate-700 dark:bg-slate-700 dark:text-slate-200";
       status.classList.remove("hidden");
       showToast("Đã xóa cấu hình Supabase", "🗑️");
@@ -855,10 +855,10 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
       if (badge) {
         if (state.isExamCountdown) {
           badge.textContent = "Exam 20m";
-          badge.className = "hidden sm:inline text-[10px] uppercase px-1.5 py-0.5 rounded bg-rose-500/30 text-rose-200 font-semibold";
+          badge.className = "hidden xl:inline text-[10px] uppercase px-1.5 py-0.5 rounded bg-rose-500/30 text-rose-200 font-semibold";
         } else {
           badge.textContent = "Study";
-          badge.className = "hidden sm:inline text-[10px] uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-200 font-semibold";
+          badge.className = "hidden xl:inline text-[10px] uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-200 font-semibold";
         }
       }
     }
@@ -1659,7 +1659,7 @@ notify pgrst, 'reload schema';`;
     function renderReview() {
       const q = reviewQueue();
       const nav = `<div class="flex flex-wrap gap-2 mt-5">
-        <button onclick="showDashboard()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold dark:bg-slate-700 dark:text-white">Dashboard</button>
+        <button onclick="showDashboard()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold dark:bg-slate-700 dark:text-white">Tiến độ</button>
         <button onclick="showVocab()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold dark:bg-slate-700 dark:text-white">📖 Sổ từ vựng (${state.vocab.length})</button>
         <button onclick="showLibrary()" class="px-4 py-2 rounded-xl bg-[#1E3A8A] text-white text-sm font-semibold hover:bg-blue-800">Tiếp tục luyện</button></div>`;
       if (!q.length) {
@@ -1705,7 +1705,7 @@ notify pgrst, 'reload schema';`;
         <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
           <h2 class="text-xl font-bold">📖 Sổ từ vựng (${state.vocab.length})</h2>
           <div class="flex gap-2"><button onclick="showReview()" class="px-4 py-2 rounded-xl bg-[#1E3A8A] text-white text-sm font-semibold hover:bg-blue-800">Ôn tập</button>
-          <button onclick="showDashboard()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold dark:bg-slate-700 dark:text-white">Dashboard</button></div>
+          <button onclick="showDashboard()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold dark:bg-slate-700 dark:text-white">Tiến độ</button></div>
         </div>
         ${list.length ? `<div class="space-y-3">${list.map(({ v, i }) => `
           <div class="p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
@@ -1942,7 +1942,7 @@ notify pgrst, 'reload schema';`;
       return `<div class="mb-4 p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 space-y-2.5">
         <div class="flex flex-wrap items-center justify-between gap-2"><div class="flex flex-wrap items-center gap-2"><span class="text-xs font-bold uppercase text-slate-500">📝 Thi thử</span>${tabs}</div>${right}</div>
         <div class="flex flex-wrap gap-1.5">${nav}</div>
-        ${m.submitted ? `<div class="flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-300">${r.band ? "" : "Band chỉ ước lượng khi đủ 40 câu (3 passage)."} <button onclick="showMock()" class="underline font-semibold">Thi thử mới</button> <button onclick="showDashboard()" class="underline font-semibold">Dashboard</button></div>`
+        ${m.submitted ? `<div class="flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-300">${r.band ? "" : "Band chỉ ước lượng khi đủ 40 câu (3 passage)."} <button onclick="showMock()" class="underline font-semibold">Thi thử mới</button> <button onclick="showDashboard()" class="underline font-semibold">Tiến độ</button></div>`
           : `<div class="text-[11px] text-slate-500 dark:text-slate-400">Không có hint • Xanh đậm = đã trả lời • Vàng = đánh dấu xem lại • Đồng hồ tính theo giờ thật, thoát ra vẫn chạy.</div>`}
       </div>`;
     }
@@ -1959,9 +1959,9 @@ notify pgrst, 'reload schema';`;
         return `<label class="flex items-center gap-3 p-3 rounded-xl border ${on ? "border-[#1E3A8A] bg-blue-50 dark:bg-blue-900/30" : "border-slate-200 dark:border-slate-700"} cursor-pointer"><input type="checkbox" ${on ? "checked" : ""} onchange="toggleMockSel('${esc(t.id)}')"><span class="flex-1 text-sm font-semibold">${esc(t.title)}</span><span class="text-xs text-slate-500">${qCount(t.id)} câu</span></label>`;
       }).join("");
       return `<div class="max-w-2xl mx-auto fade-in space-y-4">
-        <div class="flex items-center justify-between"><h2 class="text-xl font-bold">📝 Thi thử</h2><button onclick="showDashboard()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold dark:bg-slate-700 dark:text-white">Dashboard</button></div>
+        <div class="flex items-center justify-between"><h2 class="text-xl font-bold">📝 Thi thử</h2><button onclick="showDashboard()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold dark:bg-slate-700 dark:text-white">Tiến độ</button></div>
         ${resume}
-        ${FULL_TESTS.map((ft, i) => fullAvail(ft) ? `<div class="p-4 rounded-xl bg-blue-50 border border-blue-200 dark:bg-blue-900/30 dark:border-blue-700 flex flex-wrap items-center justify-between gap-3"><div class="text-sm"><strong>Đề thi thử đủ 40 câu — ${ft.name}</strong> (3 passage, 60 phút, quy đổi band)${fullLast(ft)}</div><button onclick="startFullTest(${i})" class="px-4 py-2 rounded-xl bg-[#1E3A8A] text-white text-sm font-bold hover:bg-blue-800">Bắt đầu ${ft.name}</button></div>` : "").join("")}
+        <div class="grid gap-3 sm:grid-cols-3">${FULL_TESTS.map((ft, i) => fullAvail(ft) ? `<div class="p-4 rounded-xl bg-blue-50 border border-blue-200 dark:bg-blue-900/30 dark:border-blue-700 flex flex-col justify-between gap-3"><div class="text-sm"><strong class="block text-base">${ft.name} • 40 câu</strong><span class="text-xs text-slate-600 dark:text-slate-300">3 passage • 60 phút • quy đổi band</span><span class="block text-xs mt-1 text-blue-800 dark:text-blue-200">${fullLast(ft).replace(" • gần nhất: ", "Gần nhất: ") || "Chưa làm"}</span></div><button onclick="startFullTest(${i})" class="px-4 py-2 rounded-xl bg-[#1E3A8A] text-white text-sm font-bold hover:bg-blue-800">Bắt đầu ${ft.name}</button></div>` : "").join("")}</div>
         <p class="text-sm text-slate-600 dark:text-slate-300">Chọn 1–3 passage trong thư viện. Mỗi passage 20 phút, không hint, nộp mới thấy đáp án. Chọn đủ bộ 40 câu để có band ước lượng (thang Academic).</p>
         <div class="space-y-2">${list || `<div class="p-6 text-center rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">Thư viện đang trống. <button class="underline" onclick="showLibrary()">Nhập bài</button> trước.</div>`}</div>
         ${pool.length ? `<div class="flex flex-wrap items-center justify-between gap-3"><span class="text-sm text-slate-600 dark:text-slate-300">${sel.length} passage • ${totalQ} câu • ${sel.length * 20} phút</span>
@@ -2392,7 +2392,7 @@ PASSAGE:
       return `<div class="max-w-3xl mx-auto fade-in space-y-6">
         <div class="flex flex-wrap items-center justify-between gap-2"><h2 class="text-xl font-bold">📚 Thư viện bài</h2>
           <div class="flex gap-2"><button onclick="continueLearning()" class="px-4 py-2 rounded-xl bg-[#1E3A8A] text-white text-sm font-semibold hover:bg-blue-800">Tiếp tục học</button>
-          <button onclick="showDashboard()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold dark:bg-slate-700 dark:text-white">Dashboard</button></div></div>
+          <button onclick="showDashboard()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold dark:bg-slate-700 dark:text-white">Tiến độ</button></div></div>
         ${unitHtml || `<div class="p-6 text-center rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">Chưa có bài nào. Nhập JSON bên dưới hoặc bấm "Khôi phục bài Collins".</div>`}
         <section class="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
           <h3 class="font-bold mb-1">🤖 Tạo bài từ passage thật bằng AI</h3>
@@ -2640,7 +2640,7 @@ PASSAGE:
       const tile = (cls, label, val, extra = "") => `<div class="p-4 rounded-xl border ${cls}"><div class="text-xs font-bold uppercase opacity-80">${label}</div><div class="text-xl font-bold mt-1">${val}</div>${extra}</div>`;
       return `<div class="space-y-6 fade-in">
         <div class="flex flex-wrap items-center justify-between gap-4">
-          <div><h2 class="text-2xl font-bold text-slate-900 dark:text-white">Progress Dashboard</h2>
+          <div><h2 class="text-2xl font-bold text-slate-900 dark:text-white">Tiến độ học tập</h2>
             <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">${currentUser ? `Đồng bộ theo tài khoản: <strong>${esc(currentUser.email)}</strong>` : "Guest mode — đăng nhập để đồng bộ giữa các thiết bị"}</p></div>
           <div class="flex flex-wrap gap-2">
             ${!currentUser ? `<button onclick="openAuthModal()" class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700">Đăng nhập để Sync</button>` : ""}
