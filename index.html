@@ -518,15 +518,16 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
           }, { onConflict: "user_id" });
         if (error) throw error;
         saveLocal(); // also keep local backup
-        cloudDirty = false; lastSyncAt = Date.now();
+        cloudDirty = false; lastSyncAt = Date.now(); lastSyncErr = null;
         updateSyncStatus("synced");
       } catch (err) {
         console.error("Cloud save failed", err);
         saveLocal();
         updateSyncStatus("error");
-        showToast("Lưu cloud thất bại, đã lưu local. Sẽ tự thử lại.", "⚠️");
+        const rs = noteSyncErr(err);
+        if (window._lastErrToast !== rs.short || Date.now() - (window._lastErrAt || 0) > 120000) { window._lastErrToast = rs.short; window._lastErrAt = Date.now(); showToast("Đồng bộ lỗi: " + rs.short + ". Dữ liệu vẫn lưu trên máy. Bấm trạng thái trên cùng để xem cách sửa.", "⚠️"); }
         if (retryTimer) clearTimeout(retryTimer);
-        retryTimer = setTimeout(() => { retryTimer = null; if (currentUser) saveToCloud(); }, 30000);
+        if (/kết nối/.test(rs.short)) retryTimer = setTimeout(() => { retryTimer = null; if (currentUser) saveToCloud(); }, 30000);
       } finally {
         isSyncing = false;
       }
@@ -1087,6 +1088,66 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
 
     // ---------- Exam (Part 3) ----------
 
+    // ---------- Sync diagnostics ----------
+    let lastSyncErr = null;
+    const SYNC_FIX_SQL = `create table if not exists public.user_progress (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  data jsonb not null default '{}'::jsonb,
+  updated_at timestamptz not null default now()
+);
+alter table public.user_progress enable row level security;
+drop policy if exists "own select" on public.user_progress;
+create policy "own select" on public.user_progress for select using (auth.uid() = user_id);
+drop policy if exists "own insert" on public.user_progress;
+create policy "own insert" on public.user_progress for insert with check (auth.uid() = user_id);
+drop policy if exists "own update" on public.user_progress;
+create policy "own update" on public.user_progress for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+drop policy if exists "own delete" on public.user_progress;
+create policy "own delete" on public.user_progress for delete using (auth.uid() = user_id);
+notify pgrst, 'reload schema';`;
+    function syncReason(err) {
+      const m = String((err && (err.message || err.error_description)) || err || ""), c = String((err && err.code) || ""), st = err && err.status;
+      const mk = (short, tip, sql) => ({ short, tip, sql: !!sql, raw: (c ? c + ": " : "") + m });
+      if (c === "42P01" || c === "PGRST205" || /does not exist/i.test(m) && /relation|table/i.test(m) || /could not find the table/i.test(m)) return mk("Chưa có bảng user_progress trên Supabase", "Chạy đoạn SQL bên dưới trong Supabase → SQL Editor, rồi bấm Chẩn đoán lại.", true);
+      if (c === "42P10" || /no unique or exclusion constraint/i.test(m)) return mk("Bảng user_progress thiếu khóa chính user_id", "Chạy SQL: alter table public.user_progress add primary key (user_id);  (nếu báo trùng, xóa bảng cũ rồi chạy SQL tạo lại).", false);
+      if (c === "42703" || /column .* does not exist|could not find the .* column/i.test(m)) return mk("Bảng user_progress cũ có cấu trúc khác", "Chạy SQL: alter table public.user_progress add column if not exists data jsonb not null default '{}'::jsonb, add column if not exists updated_at timestamptz not null default now();  rồi chạy thêm SQL tạo policy bên dưới.", true);
+      if (c === "42501" || /row-level security|permission denied|violates row/i.test(m)) return mk("Thiếu quyền ghi (policy RLS) trên bảng", "Chạy đoạn SQL bên dưới để tạo lại policy, rồi bấm Chẩn đoán lại.", true);
+      if (/jwt|token.*(expired|invalid)|PGRST30/i.test(m + c)) return mk("Phiên đăng nhập hết hạn", "Đăng xuất rồi đăng nhập lại.", false);
+      if (/invalid api key|apikey|no api key/i.test(m) || st === 401) return mk("Anon key hoặc Project URL không đúng", "Mở ⋯ → Cấu hình đồng bộ và dán lại đúng Project URL + anon (public) key.", false);
+      if (/failed to fetch|networkerror|load failed|network/i.test(m)) return mk("Không kết nối được tới Supabase", "Kiểm tra mạng, Project URL, và dự án có đang bị tạm dừng (paused) không.", false);
+      if (c === "23503" || /foreign key/i.test(m)) return mk("Tài khoản không tồn tại trong auth.users", "Đăng xuất rồi đăng nhập lại; nếu vẫn lỗi hãy tạo lại tài khoản.", false);
+      return mk("Lỗi không xác định từ Supabase", "Xem chi tiết kỹ thuật bên dưới và gửi cho người hỗ trợ.", false);
+    }
+    function noteSyncErr(err) {
+      lastSyncErr = syncReason(err);
+      const el = byId("sync-status"); if (el) { el.title = lastSyncErr.short + " — bấm để xem cách sửa"; el.style.cursor = "pointer"; el.onclick = () => { state.view = "library"; render(); setTimeout(() => { const d = byId("sy-h"); if (d) d.scrollIntoView({ behavior: "smooth" }); }, 50); }; }
+      return lastSyncErr;
+    }
+    async function diagnoseSync() {
+      const out = []; const ok = (t) => out.push("✅ " + t), bad = (t) => out.push("❌ " + t);
+      const box = byId("sync-diag"); const show = () => { if (box) { box.classList.remove("hidden"); box.textContent = out.join("\n"); } };
+      if (!window._sbClient) { bad("Chưa cấu hình Supabase (⋯ → Cấu hình đồng bộ)."); show(); return; }
+      ok("Đã có cấu hình Supabase"); 
+      try {
+        const { data: { session }, error } = await window._sbClient.auth.getSession();
+        if (error) throw error;
+        if (!session) { bad("Chưa đăng nhập."); show(); return; }
+        ok("Đã đăng nhập: " + session.user.email);
+      } catch (e) { bad("Phiên đăng nhập: " + syncReason(e).short); show(); return; }
+      try {
+        const { error } = await window._sbClient.from("user_progress").select("user_id").limit(1);
+        if (error) throw error; ok("Đọc bảng user_progress được");
+      } catch (e) { const r = syncReason(e); bad("Đọc bảng: " + r.short); out.push("   → " + r.tip); out.push("   (chi tiết: " + r.raw + ")"); lastSyncErr = r; show(); renderIfLib(); return; }
+      try {
+        const { error } = await window._sbClient.from("user_progress").upsert({ user_id: currentUser.id, data: getProgressPayload(), updated_at: new Date().toISOString() }, { onConflict: "user_id" });
+        if (error) throw error; ok("Ghi bảng user_progress được"); lastSyncErr = null; cloudDirty = false; lastSyncAt = Date.now(); updateSyncStatus("synced");
+        out.push("🎉 Mọi thứ hoạt động. Đồng bộ đã sẵn sàng.");
+      } catch (e) { const r = syncReason(e); bad("Ghi bảng: " + r.short); out.push("   → " + r.tip); out.push("   (chi tiết: " + r.raw + ")"); lastSyncErr = r; }
+      show(); renderIfLib();
+    }
+    function renderIfLib() { if (state.view === "library") { const keep = byId("sync-diag") ? byId("sync-diag").textContent : ""; render(); const d = byId("sync-diag"); if (d && keep) { d.classList.remove("hidden"); d.textContent = keep; } } }
+    function copyFixSql() { try { navigator.clipboard.writeText(SYNC_FIX_SQL).then(() => showToast("Đã chép SQL. Dán vào Supabase → SQL Editor → Run", "📋")); } catch (e) { showToast("Không chép được, hãy bôi đen và copy thủ công", "⚠️"); } }
+
     // ---------- Auto sync ----------
     async function syncNow(manual) {
       if (!window._sbClient || !currentUser) { if (manual) showToast("Hãy đăng nhập trước", "ℹ️"); return false; }
@@ -1114,7 +1175,7 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
         return true;
       } catch (e) {
         console.error("syncNow failed", e); isSyncing = false;
-        updateSyncStatus("error");
+        updateSyncStatus("error"); noteSyncErr(e);
         if (manual) showToast("Đồng bộ lỗi: " + (e.message || e), "⚠️");
         return false;
       }
@@ -1154,6 +1215,9 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
             : `<button onclick="openAuthModal()" class="${btn}bg-[#1E3A8A] text-white hover:bg-blue-800">🔐 Đăng nhập</button>`}
           ${cfg ? `<button onclick="copySetupLink()" class="${btn}bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-white">🔗 Link thiết lập thiết bị khác</button>` : ""}
         </div>
+        ${currentUser ? `<div class="mt-3"><button onclick="diagnoseSync()" class="${btn}bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300">🩺 Chẩn đoán đồng bộ</button></div>` : ""}
+        ${lastSyncErr ? `<div class="mt-3 p-3 rounded-xl bg-rose-50 border border-rose-300 text-rose-900 text-xs dark:bg-rose-900/30 dark:border-rose-700 dark:text-rose-100"><strong>Lỗi đồng bộ gần nhất:</strong> ${esc(lastSyncErr.short)}<br>${esc(lastSyncErr.tip)}<br><span class="opacity-70">Chi tiết: ${esc(lastSyncErr.raw)}</span>${lastSyncErr.sql ? `<div class="mt-2"><button onclick="copyFixSql()" class="px-3 py-1.5 rounded-lg bg-rose-600 text-white font-semibold">📋 Chép SQL sửa lỗi</button></div>` : ""}</div>` : ""}
+        <pre id="sync-diag" class="hidden mt-3 p-3 rounded-xl bg-slate-900 text-slate-100 text-[11px] whitespace-pre-wrap break-words" role="status"></pre>
         <input id="sync-link" readonly class="hidden mt-2 w-full px-3 py-2 rounded-xl border border-slate-300 text-[11px] font-mono dark:bg-slate-900 dark:border-slate-600 dark:text-white" aria-label="Link thiết lập">
         ${cfg ? `<p class="text-[11px] text-slate-500 mt-1">Mở link trên điện thoại/máy khác để tự điền cấu hình Supabase, sau đó đăng nhập cùng email. Link chứa anon key (công khai theo thiết kế của Supabase) nhưng đừng đăng công khai.</p>` : ""}
       </section>`;
@@ -1400,7 +1464,7 @@ create policy "own delete" on public.user_progress for delete using (auth.uid() 
         }
       } catch (err) {
         console.error("Cloud load failed", err);
-        updateSyncStatus("error");
+        updateSyncStatus("error"); noteSyncErr(err);
       }
       return false;
     }

@@ -1,5 +1,5 @@
 // Service worker: lưu trang + thư viện CDN để mở lại khi offline.
-const CACHE = "ielts-trainer-v23";
+const CACHE = "ielts-trainer-v24";
 const SHELL = ["./", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {
